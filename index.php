@@ -42,7 +42,7 @@
       </div>
      </div>
     </form>
-    <a href="#">Esqueci a Senha</a><br>
+    <a href="#">Recuperar Senha</a><br>
   </div>
  </div>
  <p align="center">
@@ -60,8 +60,5 @@
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="dist/js/light-bootstrap-dashboard.js"></script>
 <script src="dist/js/demo.js"></script>
-
-
-
 </body>
 </html>
