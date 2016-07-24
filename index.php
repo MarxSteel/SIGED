@@ -56,7 +56,7 @@ if (isset($_GET["erro"])) {
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <button type="submit" class="btn btn-facebook btn-block btn-flat">Entrar</button>
+          <button type="submit" class="btn btn-facebook btn-block btn-flat">Acessar</button>
         </div>
         <!-- /.col -->
       </div>
