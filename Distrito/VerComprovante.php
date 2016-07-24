@@ -16,7 +16,20 @@ $PDO = db_connect();
             $IDUSer = $par['codLogin'];
             $Foto = $par['Foto'];
 
+$IDCOMP = $_GET['ID'];
+$dadosclube = $PDO->prepare("SELECT * FROM icbr_tesouraria WHERE icbr_tid='$IDCOMP'");
+      $dadosclube->execute();
+      $campo = $dadosclube->fetch();
+      $DespTipo = $campo['tes_TipoOp'];
+       if ($DespTipo == 'P') {
+        $DTipo = '<button class="btn btn-success btn-xs btn-block">ENTRADA</button>';
+       }
+       elseif ($DespTipo == 'N') {
+        $DTipo = '<button class="btn btn-danger btn-xs btn-block">SAÍDA</button>';
+       }
 
+     $DespValor = $campo['tes_Valor'];
+        $FValor = number_format($DespValor, 2, ',', '.'); // retorna R$100.000,50
 $DataCadastro = date("d/m/Y - h:i:s");
 ?>
 <!DOCTYPE html>
@@ -103,56 +116,31 @@ $DataCadastro = date("d/m/Y - h:i:s");
    <section class="content">
     <div class="box box-default">
      <div class="box-header with-border">
-      <h2 class="box-title">Mensalidade Anual - Interact Club de Curitiba Norte</h2>          
+      <h2 class="box-title"><?php echo $campo['tes_Descreve']; ?></h2>          
      </div>
      <div class="box-body">
-      <div class="row invoice-info">
+     <?php 
+     echo '<div class="row invoice-info">';
+     echo '<div class="col-sm-6 invoice-col">';
+     echo '<address>';
+     echo '<strong>Valor:</strong><br />';
+     echo '<strong>R$</strong>' . $FValor . '<br /><br />';
+     echo '<strong>Tipo:</strong><br />';
+     echo $DTipo;
+     echo '<strong>Data de Cadastro: </strong><br />';
+     echo $campo["tes_DtCadastro"] . '<br /><br />';
+     echo '<strong>Data de Lançamento: </strong><br />';
+     echo $campo["tes_DtMovimento"] . '<br /><br />';
+     echo '</address>';
+     echo '</div>';
+
+     ?>
        <div class="col-sm-6 invoice-col">
-        <address>
-         <strong>Lançamento:</strong><br />
-          Mensalidade Anual - Interact Club de Curitiba Norte<br /><br />
-         <strong>Valor:</strong><br />
-          <strong>R$</strong>450,00<br /><br />
-         <strong>Tipo:</strong><br />
-          <strong>ENTRADA</strong><br /><br />
-         <strong>Data de Cadastro: </strong><br />
-          10/10/2010<br /><br />
-        </address>
-       </div>
-       <div class="col-sm-6 invoice-col">
-       <img src="../dist/img/comprovante.jpg" width="300">
+       <img src="tesouraria/<?php echo $campo['tes_FotoComprovante']; ?>" width="200">
 
        </div>
        <div class="col-sm-12 invoice-col">
-        <?php
-         if(@$_POST["enviar"])
-           {
-            $executa = $PDO->query("UPDATE icbr_clube SET icbr_Status='A' WHERE icbr_id='$IDClube' ");
-             if($executa)
-               {
-                echo '<script type="text/javascript">alert("Clube Desativado. Agora Inativaremos Associados");</script>';
-                $executa2 = $PDO->query("UPDATE icbr_associado SET icbr_AssStatus='A' WHERE icbr_AssClubeID='$IDClube'");
-                 if ($executa2)
-                  {
-                    echo '<script type="text/javascript">alert("Associados Inativados");</script>';
-                    echo '<script type="text/javascript">window.close();</script>';
-                  }
-                  else
-                  {
-                    echo '<script type="text/javascript">alert("Não foi possível Inativar os Associados");</script>';
-                  }
-               }
-               else
-               {
-                echo '<script type="text/javascript">alert("! <?php print_r($PDO->errorInfo()); ?>");</script>';
-               }
-              }
-             ?>
-
-
-
-
-
+      
        </div>
       </div>
      </div>

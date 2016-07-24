@@ -15,6 +15,33 @@ $PDO = db_connect();
             $LoginCargoClube = $par['CargoClube'];
             $IDUSer = $par['codLogin'];
             $Foto = $par['Foto'];
+  /* MARCADOR DE CAIXA DO DISTRITO
+  Primeira Query:
+  Chama os valores POSITIVOS para a gestão
+  Segunda Query:
+  Chama os valores POSITIVOS para a gestão
+  $Valores: subtrai saídas por entradas
+  $Contagem: transforma para padrão financeiro (de 210011 para R$2.100,11)
+  */
+
+  $ValoresPositivo = $PDO->query("SELECT SUM(tes_Valor) FROM icbr_tesouraria  WHERE tes_Distrito='$Distrito' AND tes_Gestao='$GVigente' AND tes_TipoOP='P'");
+  $ValorP = $ValoresPositivo->fetchColumn();
+  
+  $ValoresNegativo = $PDO->query("SELECT SUM(tes_Valor) FROM icbr_tesouraria  WHERE tes_Distrito='$Distrito' AND tes_Gestao='$GVigente' AND tes_TipoOP='N'");
+  $ValorN = $ValoresNegativo->fetchColumn();
+
+  $Valores = $ValorP-$ValorN;
+
+  $Contagem = 'R$' . number_format($Valores, 2, ',', '.'); // retorna R$100.000,50
+
+
+$QueryClubes = "SELECT * FROM icbr_tesouraria WHERE tes_Distrito='$Distrito' AND tes_Gestao='$GVigente' ORDER BY icbr_tid ASC";
+$stmt = $PDO->prepare($QueryClubes);
+$stmt->execute();
+
+
+
+
 
 ?>
 <!DOCTYPE html>
@@ -114,9 +141,9 @@ $PDO = db_connect();
           </a>
           <ul class="treeview-menu">
             <li><a href="Clubes.php"><i class="fa fa-industry"></i> Clubes</a></li>
-            <li class="active"><a href="Associados.php"><i class="fa fa-users"></i> Associados</a></li>
+            <li><a href="Associados.php"><i class="fa fa-users"></i> Associados</a></li>
             <li><a href="Secretaria.php"><i class="fa fa-book"></i> Secretaria</a></li>
-            <li><a href="Tesouraria.php"><i class="fa fa-dollar"></i> Tesouraria</a></li>
+            <li class="active"><a href="Tesouraria.php"><i class="fa fa-dollar"></i> Tesouraria</a></li>
           </ul>
         </li>
         <li><a href="Projetos.php"><i class="fa fa-archive"></i>Arquivo de Projetos</a></li>
@@ -157,12 +184,21 @@ $PDO = db_connect();
     </div>
      <div class="col-md-4 col-sm-4 col-xs-12">
       <div class="info-box">Saldo Atual:
-        <span class="info-box-icon btn-success">
-         <i class="glyphicon glyphicon-menu-up"></i>
-        </span>
-       <div class="info-box-content"><h3>
-       <p class="text-green">R$2.517,55</p></h3>
-
+       <?php
+       if ($Valores >= 0) {
+         echo '<span class="info-box-icon btn-success">';
+         echo '<i class="glyphicon glyphicon-menu-up"></i>';
+         echo '</span>';
+         echo '<div class="info-box-content">';
+         echo '<h3><p class="text-green">' . $Contagem . '</p></h3>';
+       }
+       else{
+         echo '<span class="info-box-icon btn-danger">';
+         echo '<i class="glyphicon glyphicon-menu-down"></i>';
+         echo '</span>';
+         echo '<div class="info-box-content">';
+         echo '<h3><p class="text-red">' . $Contagem . '</p></h3>';       }
+       ?>
       </div>
      </div>
     </div>
@@ -193,56 +229,41 @@ $PDO = db_connect();
            <th>ID</th>
            <th>Descrição</th>
            <th>Tipo</th>
-           <th>Saldo</th>
+           <th>Data de Movimentação</th>
+           <th>Valor</th>
            <th></th>
           </tr>
          </thead>
          <tbody>
-          <tr>
-           <td>1</td>
-           <td>Visita Oficial Interact Club de Curitiba Leste</td>
-           <td><button class="btn btn-danger btn-xs btn-block btn-flat disabled">SAÍDA</button></td>
-           <td><strong>R$</strong>25,00</td>
+           <?php while ($user = $stmt->fetch(PDO::FETCH_ASSOC)): 
+           echo '<tr>';
+           echo '<td>' . $user['icbr_tid'] . '</td>';
+           echo '<td>' . $user['tes_Descreve'] . '</td>';
+            $TipoOperacao = $user['tes_TipoOp'];
+            $IDComprovante = $user['icbr_tid'];
+            if ($TipoOperacao == 'P') {
+             echo '<td>';
+             echo '<button class="btn btn-success btn-xs btn-block disabled">ENTRADA</button>';
+             echo '</td>';
+            }
+            elseif ($TipoOperacao == 'N') {
+             echo '<td>';
+             echo '<button class="btn btn-danger btn-xs btn-block disabled">Saída</button>';
+             echo '</td>';            
+            }
+            else{
+              #Nada Aqui
+            }
+           echo '<td>' . $user['tes_DtMovimento'] . '</td>';
+           echo '<td><strong>R$</strong>';
+           echo '<code>' . number_format($user['tes_Valor'], 2, ',', '.') . '<code>';
+           echo '</td>';
+           ?>         
            <td>
-             <span class="btn bg-navy btn-xs btn-block" onclick="window.open('VerComprovante.php', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-search"></i></span>
+             <span class="btn bg-navy btn-xs btn-block" onclick="window.open('VerComprovante.php?ID=<?php echo $IDComprovante; ?>', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-search"></i></span>
            </td>          
           </tr>
-          <tr>
-           <td>2</td>
-           <td>Mensalidade Anual - Interact Club de Curitiba Rebouças</td>
-           <td><button class="btn btn-success btn-xs btn-block btn-flat disabled">ENTRADA</button></td>
-           <td><strong>R$</strong>450,00</td>
-           <td>
-             <span class="btn bg-navy btn-xs btn-block" onclick="window.open('VerComprovante.php', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-search"></i></span>
-           </td>          
-          </tr>
-          <tr>
-           <td>3</td>
-           <td>Mensalidade Anual - Interact Club de Curitiba Norte</td>
-           <td><button class="btn btn-success btn-xs btn-block btn-flat disabled">ENTRADA</button></td>
-           <td><strong>R$</strong>450,00</td>
-           <td>
-             <span class="btn bg-navy btn-xs btn-block" onclick="window.open('VerComprovante.php', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-search"></i></span>
-           </td>          
-          </tr>
-          <tr>
-           <td>4</td>
-           <td>Mensalidade Parcial - Interact Club de Paranaguá Rocio</td>
-           <td><button class="btn btn-success btn-xs btn-block btn-flat disabled">ENTRADA</button></td>
-           <td><strong>R$</strong>225,00</td>
-           <td>
-             <span class="btn bg-navy btn-xs btn-block" onclick="window.open('VerComprovante.php', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-search"></i></span>
-           </td>          
-          </tr>
-          <tr>
-           <td>5</td>
-           <td>Repasse Interact Brasil - CODIC</td>
-           <td><button class="btn btn-danger btn-xs btn-block btn-flat disabled">SAÍDA</button></td>
-           <td><strong>R$</strong>150,00</td>
-           <td>
-             <span class="btn bg-navy btn-xs btn-block" onclick="window.open('VerComprovante.php', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-search"></i></span>
-           </td>          
-          </tr>
+           <?php endwhile; ?>
          </tbody>
         </table>
         </div>
@@ -266,22 +287,105 @@ $PDO = db_connect();
         </div>
         <!-- FIM DO MODAL DE GERAR RELATÓRIO -->
         <!-- MODAL DE INSERIR LANÇAMENTO -->
-        <div class="modal fade" id="NovoLancamento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <code><span aria-hidden="true">&times;</span></code>
-            </button>
-            <h4 class="modal-title" id="myModalLabel">Novo Lançamento</h4>
-           </div>
-           <div class="modal-body">
-              EM BREVE
+
+  <div class="modal fade" id="NovoLancamento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+       <code><span aria-hidden="true">&times;</span></code>
+      </button>
+      <h4 class="modal-title" id="myModalLabel">Adicionando Movimento de caixa</h4>
+     </div>
+     <div class="modal-body">
+      <div class="col-xs-12">
+       <form name="despesa" id="despesa" method="post" action="" enctype="multipart/form-data">
+        <div class="col-xs-4">Data de Movimentação
+         <div class="input-group">
+          <div class="input-group-addon">
+           <i class="fa fa-calendar"></i>
+          </div>
+          <input type="text" name="data" class="form-control" minlength="10" maxlength="10" OnKeyPress="formatar('##/##/####', this)" required="required">
+         </div>
+        </div>
+        <div class="col-xs-4">Valor
+         <div class="input-group">
+          <span class="input-group-addon">$</span>
+          <input type="text" name="valor" required="required" class="form-control">
+         </div>
+        </div>
+        <div class="col-xs-4">Gestão
+         <select class="form-control" name="gestao" id="gestao" required="required">
+          <option value="" selected="selected">SELECIONE</option>
+          <option value="2016/17">2016/17</option>
+         </select>
+        </div>
+        <div class="col-xs-12">Descrição da Movimentação
+          <input type="text" name="descreve" required="required" class="form-control">
+        </div>
+        <div class="col-xs-7">Selecionar Arquivo
+          <input type="file"   name="Arquivo" id="Arquivo" />
+        </div>
+        <div class="col-xs-5">Tipo de Operação
+         <select class="form-control" name="operacao" id="operacao" required="required">
+          <option value="" selected="selected">SELECIONE</option>
+          <option value="P">Entrada</option>
+          <option value="N">Saída</option>
+         </select>
+        </div>
+        <br /><br /><br /><br /><br /><br /><br />
+        <div>
+        <br />
+         <input name="enviar" type="submit" class="btn btn-primary" id="enviar" value="Cadastrar" />
+         <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+        </div>
+       </form>
+       <?php
+       if(@$_POST["enviar"])
+       {
+
+          $nome_temporario=$_FILES["Arquivo"]["tmp_name"];
+          $nome_real=$_FILES["Arquivo"]["name"];
+          $novonome = md5(mt_rand(1,10000).$nome_real["name"]).'.jpg';
+          $valor = "tesouraria/" . $novonome;
+          $upload = copy($nome_temporario,$valor);
+          $DataCadastro = date('d/m/Y h:i:s');
+          $DataDespesa = $_POST['data'];
+          $valor = $_POST['valor'];
+            $pontos = '.';
+            $virgula = ',';
+            $result = str_replace($pontos, "", $valor);
+            $ValorDespesa = str_replace($virgula, ".", $result);
+          $GestaoDespesa = $_POST['gestao'];
+          $DescreveDespesa = $_POST['descreve'];
+          $TipoDespesa = $_POST['operacao'];
+          $InserirDespesa = $PDO->query("INSERT INTO icbr_tesouraria (tes_Distrito, tes_Gestao, tes_Descreve, tes_TipoOp, tes_DtMovimento, tes_Valor, tes_DtCadastro, tes_FotoComprovante) VALUES ('$Distrito', '$GestaoDespesa', '$DescreveDespesa', '$TipoDespesa', '$DataDespesa', '$ValorDespesa', '$DataCadastro', '$novonome')");
+              if ($InserirDespesa) 
+              {
+                  echo '
+                 <script type="text/JavaScript">
+                  alert("Movimento Cadastrado com Sucesso!");
+                  location.href="Tesouraria.php"
+                 </script>';              }
+              else{
+              echo '<script type="text/javascript">alert("Erro! ' . $PDO->errorInfo() . '");</script>';
+              }
+        }
+       ?>
+
+
+
+
+            </div>
            </div>
            <div class="modal-footer"></div>
           </div>
          </div>
-        </div>    
+        </div>
+
+
+
+
         <!-- FIM DO MODAL DE INSERIR LANÇAMENTO -->
 
 
@@ -312,6 +416,8 @@ $PDO = db_connect();
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="../plugins/fastclick/fastclick.min.js"></script>
+<script type="text/javascript" src="formatar_moeda.js"></script>
+
 <script>
       $(function () {
         $('#AInativo').DataTable({
@@ -333,6 +439,17 @@ $PDO = db_connect();
       });
     </script>
 
-
+<script>
+function formatar(mascara, documento){
+  var i = documento.value.length;
+  var saida = mascara.substring(0,1);
+  var texto = mascara.substring(i)
+  
+  if (texto.substring(0,1) != saida){
+            documento.value += texto.substring(0,1);
+  }
+  
+}
+</script>
 </body>
 </html>
