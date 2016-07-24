@@ -180,6 +180,9 @@ $DataCadastro = date("d/m/Y - h:i:s");
         <li class="active"><a href="#Ativos" data-toggle="tab">Clubes Ativos</a></li>
         <li><a href="#Inativos" data-toggle="tab">Clubes Inativos</a></li>
         <li class="pull-left header">LISTA DE CLUBS</li>
+          <span data-toggle="modal" data-target="#ImportaClub" class="btn btn-danger btn-sm">
+           <i class="fa fa-cloud-upload">Importar Excel</i>
+          </span>
        </ul>
        <div class="tab-content">
         <div class="tab-pane active" id="Ativos">
@@ -345,7 +348,25 @@ $DataCadastro = date("d/m/Y - h:i:s");
         });
       });
     </script>
-
+<!-- ÁREA DE MODALS -->
+<!-- MODAL DE GERAR RELATORIO -->
+ <div class="modal fade" id="ImportaClub" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+   <div class="modal-content">
+    <div class="modal-header">
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <code><span aria-hidden="true">&times;</span></code>
+     </button>
+     <h4 class="modal-title" id="myModalLabel">Importar Arquivo Excel</h4>
+    </div>
+    <div class="modal-body">
+             EM BREVE
+    </div>
+    <div class="modal-footer"></div>
+   </div>
+  </div>
+ </div>
+        <!-- FIM DO MODAL DE GERAR RELATÓRIO -->
 
 
 

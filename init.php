@@ -5,6 +5,7 @@ define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_NAME', 'interact');
+$GVigente = "2016/17";
   
 // habilita todas as exibições de erros
 ini_set('display_errors', true);
