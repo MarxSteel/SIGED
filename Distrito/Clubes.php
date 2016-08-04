@@ -357,7 +357,7 @@ $DataCadastro = date("d/m/Y - h:i:s");
      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <code><span aria-hidden="true">&times;</span></code>
      </button>
-     <h4 class="modal-title" id="myModalLabel">Importar Arquivo Excel</h4>
+     <h4 class="modal-title" id="myModalLabel">Importar Lista de Clubes</h4>
     </div>
     <div class="modal-body">        
      <form name="trocarFoto" id="name" method="post" action="" enctype="multipart/form-data">
