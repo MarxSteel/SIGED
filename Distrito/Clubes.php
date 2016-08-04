@@ -362,17 +362,25 @@ $DataCadastro = date("d/m/Y - h:i:s");
     <div class="modal-body">        
      <form name="trocarFoto" id="name" method="post" action="" enctype="multipart/form-data">
       <div class="col-xs-12">Selecionar Arquivo
-       <input type="file"   name="Arquivo" id="Arquivo"  />
+       <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+       <input type="file" name="Arquivo" />
        </div><br /><br /><br /><br /><br /><br /><br />
       <div>
        <input name="EnvExcel" type="submit" class="btn btn-primary" id="EnvExcel" value="Importar Informações" />
        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
       </div>
      </form> 
-     
+     <?php
+      if(@$_POST["EnvExcel"]){
+       $nome_temporario=$_FILES["Arquivo"]["tmp_name"];
+       $nome_real=$_FILES["Arquivo"]["name"];
+       $novonome = md5(mt_rand(1,10000).$nome_real['name']).'.csv';
+       $valor = "clubes/" . $novonome;
+       $upload = copy($nome_temporario,$valor);
+       if($upload){
+        echo '<script type="text/javascript">alert("Arquivo Enviado com Sucesso");</script>';
 
-
-
+?>
     </div>
     <div class="modal-footer"></div>
    </div>
