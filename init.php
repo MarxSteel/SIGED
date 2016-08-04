@@ -1,9 +1,9 @@
 <?php
   
 // constantes com as credenciais de acesso ao banco MySQL
-define('DB_HOST', 'localhost');
+define('DB_HOST', 'localhost:8889');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', 'root');
 define('DB_NAME', 'interact');
 $GVigente = "2016/17";
   
@@ -15,3 +15,11 @@ date_default_timezone_set('America/Sao_Paulo');
   
 // inclui o arquivo de funçõees
 require_once 'functions.php';
+
+
+    function qrcode($url, $size){
+        if($url && $size = "200"){
+        return "http://chart.apis.google.com/chart?cht=qr&chl=".$url."&chs=".$size."x".$size."";
+        }
+        }
+?> 
