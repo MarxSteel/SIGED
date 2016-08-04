@@ -359,8 +359,20 @@ $DataCadastro = date("d/m/Y - h:i:s");
      </button>
      <h4 class="modal-title" id="myModalLabel">Importar Arquivo Excel</h4>
     </div>
-    <div class="modal-body">
-             EM BREVE
+    <div class="modal-body">        
+     <form name="trocarFoto" id="name" method="post" action="" enctype="multipart/form-data">
+      <div class="col-xs-12">Selecionar Arquivo
+       <input type="file"   name="Arquivo" id="Arquivo"  />
+       </div><br /><br /><br /><br /><br /><br /><br />
+      <div>
+       <input name="EnvExcel" type="submit" class="btn btn-primary" id="EnvExcel" value="Importar Informações" />
+       <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+      </div>
+     </form> 
+     
+
+
+
     </div>
     <div class="modal-footer"></div>
    </div>
