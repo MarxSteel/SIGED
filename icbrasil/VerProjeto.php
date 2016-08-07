@@ -47,7 +47,7 @@ $stmt2->execute();
       $DataCadastro = $campo['pro_DtCadastro'];
       $ChamaStatus = $campo['pro_Status'];
       $File = $campo['pro_FileNome'];
-      $PDF = "arquivo/" . $File;
+      $PDF = "../Distrito/arquivo/" . $File;
 
 ?>
 <!DOCTYPE html>
