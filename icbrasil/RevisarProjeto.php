@@ -3,6 +3,9 @@
 require("../restritos.php"); 
 require_once '../init.php';
 $PDO = db_connect();
+$DtApr = date('d/m/Y H:i:s');
+
+
 
  $query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");
       $query->execute();
@@ -189,10 +192,10 @@ $stmt2->execute();
         </li> 
         <li class="list-group-item">
         <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#AprovaProjeto">
-             Aprovar Projeto
+             APROVAR
           </button>   
         <button type="button" class="btn bg-orange btn-block" data-toggle="modal" data-target="#ReprovaProjeto">
-             Reprovar 
+             REVISAR 
           </button>   
         </li>  
         <!-- AQUI COMEÇA O MODAL DE LIBERAÇÃO DO PROJETO -->
@@ -225,7 +228,6 @@ $stmt2->execute();
             <?php
             if(@$_POST["enviar"])
             {
-             $DtApr = date('d/m/Y H:i:s');
              $aprova = $PDO->query("UPDATE icbr_projetos SET pro_DtFinal='$DtApr', pro_Status='A' WHERE pro_id='$CodProjeto'");
              if ($aprova) {
               $SalvaLog = $PDO->query("INSERT INTO ic_log (log_tipo, log_user) VALUES ('15', '$codLogin')");
@@ -259,22 +261,150 @@ $stmt2->execute();
         </div> 
         <!-- AQUI TERMINA O MODAL DE LIBERAÇÃO DO PROEJTO -->
         <!-- AQUI COMEÇA O MODAL DE REPROVAÇÃO DO PROJETO -->
-        <div id="AprovaProjeto" class="modal fade" role="dialog">
+        <div id="ReprovaProjeto" class="modal fade" role="dialog">
          <div class="modal-dialog">
           <div class="modal-content">
            <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><code>&times;</code></button>
-            <h4 class="modal-title">Lista de Arquivos Enviados</h4>
+            <h4 class="modal-title">REVISAR PROJETO</h4>
            </div>
            <div class="modal-body">
-            
+<!-- AQUI COMEÇA O FORM PARA REPROVAR O PROJETO -->
+<form onsubmit="return valida_form();" name="cadastrar_anuncio" id="name" method="post" action="" enctype="
+     multipart/form-data">
+      <div class="col-xs-4">Status
+       <select class="form-control" name="revisao" id="revisao" required="required">
+        <option value="" selected="selected">SELECIONE</option>
+        <option value="P">CRIAR PENDÊNCIA</option>
+        <option value="R">REPROVAR</option>
+       </select>
+      </div>
+      <div class="col-xs-4">Data Revisão
+       <input type="text" class="form-control" disabled placeholder="<?php echo $DtApr; ?>">
+      </div>
+      <div class="col-xs-4">Responsável
+       <input type="text" class="form-control" disabled placeholder="<?php echo $LoginNome; ?>">
+      </div>
+      <br /><h4><div class="pull-center"> Registro de Pendências</div></h4>
+      <div class="col-xs-6">Corrigir Ortografia:
+       <select class="form-control" name="Ortografia" id="Ortografia" required="required">
+        <option value="" selected="selected">SELECIONE</option>
+        <option value="S">SIM</option>
+        <option value="N">NÃO</option>
+       </select>
+      </div>
+      <div class="col-xs-6">Corrigir Valores:
+       <select class="form-control" name="valores" id="valores" required="required">
+        <option value="" selected="selected">SELECIONE</option>
+        <option value="S">SIM</option>
+        <option value="N">NÃO</option>
+       </select>
+      </div>
+      <div class="col-xs-6">Atualizar Andamento
+       <select class="form-control" name="andamento" id="andamento" required="required">
+        <option value="" selected="selected">SELECIONE</option>
+        <option value="S">SIM</option>
+        <option value="N">NÃO</option>
+       </select>
+      </div>
+      <div class="col-xs-6">Fotos Insuficientes
+       <select class="form-control" name="fotos" id="fotos" required="required">
+        <option value="" selected="selected">SELECIONE</option>
+        <option value="S">SIM</option>
+        <option value="N">NÃO</option>
+       </select>
+      </div>
+      <div class="col-xs-6">Atualizar PDF
+       <select class="form-control" name="pdf" id="pdf" required="required">
+        <option value="" selected="selected">SELECIONE</option>
+        <option value="S">SIM</option>
+        <option value="N">NÃO</option>
+       </select>
+      </div>
+      <div class="col-xs-12">Observações
+       <textarea  name="descricao" cols="45" rows="5" class="form-control" id="descricao"></textarea>
+      </div>
+      <div class="modal-footer">
+      <br /></div><br />
+      <div>
+       <br /><br />
+        <input name="reprovar" type="submit" class="btn btn-primary" id="reprovar" value="Atualizar Pendências" />
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+      </div>
+     </form>
+        <?php
+        if(@$_POST["reprovar"])
+         {
+          $descricao = str_replace("\r\n", "<br/>", strip_tags($_POST["descricao"]));
+          $NovoStatus = $_POST['revisao'];
+          $Ortografia = $_POST['Ortografia'];
+            if ($Ortografia == 'S') {
+              $R1 = 'Ortografia; <br />';
+            }
+            else{
+              $R1 = '';
+            }
+          $valores = $_POST['valores'];
+            if ($valores == 'S') {
+              $R2 = 'Valores (R$) <br ;>';
+            }
+            else{
+              $R2 = '';
+            }
+          $andamento = $_POST['andamento'];
+            if ($andamento == 'S') {
+              $R3 = 'Andamento do projeto; <br />';
+            }
+            else{
+              $R3 = '';
+            }
+          $fotos = $_POST['fotos'];
+            if ($fotos == 'S') {
+              $R4 = 'Atualizar fotos; <br />';
+            }
+            else{
+              $R4 = '';
+            }
+          $pdf = $_POST['pdf'];
+            if ($pdf == 'S') {
+              $R5 = 'Atualizar PDF; <br />';
+            }
+            else{
+              $R5 = '';
+            }
+            $Pendencias = "Pendências a Corrigir: " . $R1 . $R2 . $R3 . $R4 . $R5 . "<br />" . $descricao;
+          $NovaPendencia = $PDO->query("INSERT INTO icbr_historicoprojeto (p_DtCadastro, p_UsrCadastro, p_Pergunta, p_id) VALUES ('$DtApr', '$LoginNome', '$Pendencias', '$CodProjeto')");
+          if ($NovaPendencia) {
+          echo '<script type="text/javascript">alert("Pendência Cadastrada com Sucesso");</script>';
+           
+          $Reprovar = $PDO->query("UPDATE icbr_projetos SET pro_Status='$NovoStatus' WHERE pro_id='$CodProjeto'");
+            if ($Reprovar) {
+            echo '<script type="text/javascript">alert("PROJETO REPROVADO COM SUCESSO");</script>';
+            echo '<script type="text/javascript">window.close();</script>';
+            }
+            else{
+            echo '<script type="text/javascript">alert("Não foi Possível reprovar o Projeto");</script>';
+
+            }
 
 
-            teste
+
+
+          }
+          else{
+                  echo '<script type="text/javascript">alert("Erro! <?php print_r($PDO->errorInfo()); ?>");</script>';
+
+          }
+
+         }
+         ?>
+
+
+
+<!-- AQUI TERMINA O FORM PARA REPROVAR O PROJETO -->
+
            </div>
-           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-           </div>
+
           </div>
          </div>
         </div> 

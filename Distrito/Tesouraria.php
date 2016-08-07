@@ -317,7 +317,7 @@ $stmt->execute();
         <div class="col-xs-4">Gestão
          <select class="form-control" name="gestao" id="gestao" required="required">
           <option value="" selected="selected">SELECIONE</option>
-          <option value="2016/17">2016/17</option>
+          <option value="1617">2016/17</option>
          </select>
         </div>
         <div class="col-xs-12">Descrição da Movimentação
