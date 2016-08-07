@@ -281,11 +281,6 @@ $PDO = db_connect();
            ?>
           </tbody>
          </table>
-
-
-
-
-
         </div>
         <div class="tab-pane" id="AguardandoRevisao">
          <table id="aguardando" class="table table-bordered table-striped table-responsive">
@@ -311,9 +306,7 @@ $PDO = db_connect();
            echo '<a href="VerProjeto.php?ID=' . $idProjeto . '" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i></a>&nbsp;';
            echo '<a class="btn bg-orange btn-sm" href="javascript:abrir(';
            echo "'RevisarProjeto.php?ID=" . $idProjeto . "');";
-           echo '"><i class="fa fa-search"> Visualizar </i></a>';
-
-           echo '<a href="RevisarProjeto.php?ID=' . $idProjeto . '" class="btn bg-orange btn-sm" target="_blank"><i class="fa fa-repeat"> Revisar</i></a>';
+           echo '"><i class="fa fa-search"> REVISAR PROJETO </i></a>';
            echo '</td>';
            echo "<tr>";
            endwhile;
@@ -457,7 +450,7 @@ $PDO = db_connect();
 <script language="JavaScript">
 function abrir(URL) {
  
-  var width = 750;
+  var width = 800;
   var height = 600;
  
   var left = 99;
