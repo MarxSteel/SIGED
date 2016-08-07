@@ -309,6 +309,10 @@ $PDO = db_connect();
             $idProjeto = $pEnv['pro_id'];
            echo '<td>';
            echo '<a href="VerProjeto.php?ID=' . $idProjeto . '" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i></a>&nbsp;';
+           echo '<a class="btn bg-orange btn-sm" href="javascript:abrir(';
+           echo "'RevisarProjeto.php?ID=" . $idProjeto . "');";
+           echo '"><i class="fa fa-search"> Visualizar </i></a>';
+
            echo '<a href="RevisarProjeto.php?ID=' . $idProjeto . '" class="btn bg-orange btn-sm" target="_blank"><i class="fa fa-repeat"> Revisar</i></a>';
            echo '</td>';
            echo "<tr>";
@@ -448,5 +452,22 @@ $PDO = db_connect();
     });
   });
 </script>
+
+
+<script language="JavaScript">
+function abrir(URL) {
+ 
+  var width = 750;
+  var height = 600;
+ 
+  var left = 99;
+  var top = 99;
+ 
+  window.open(URL,'janela', 'width='+width+', height='+height+', top='+top+', left='+left+', scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
+ 
+}
+</script>
+
+
 </body>
 </html>
