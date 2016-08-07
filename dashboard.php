@@ -16,6 +16,11 @@ $PDO = db_connect();
             $IDUSer = $par['codLogin'];
             $Foto = $par['Foto'];
 
+
+//Chamando Privilégios de Página
+  $CorrigeProjetos = $par['icProjeto'];
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,13 +36,6 @@ $PDO = db_connect();
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
   <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
 <body class="hold-transition skin-blue-light fixed sidebar-mini">
 <div class="wrapper">
@@ -157,7 +155,33 @@ $PDO = db_connect();
       <div class="info-box-content">Projetos<h4>Arquivo Nacional</h4></div>
      </div>
     </div>
+    <?php
+    if ($CorrigeProjetos == "N") {
+      //SE E SOMENTE SE CORRIGEPROJETOS FOR N ENTÃO NÃO FAÇA NADA
+    }
+    elseif ($CorrigeProjetos == "22") {
+    echo '
+    <div class="col-md-4 col-sm-6 col-xs-12">
+     <div class="info-box">
+      <a href="icbrasil/Projetos.php">
+       <span class="info-box-icon btn bg-purple">
+        <i class="fa fa-archive"></i>
+       </span>
+      </a>
+      <div class="info-box-content">INTERACT BRASIL<h4>CORRIGIR PROJETOS</h4></div>
+     </div>
+    </div>';
+    }
+
+
+    ?>
+
    </div>
+
+
+
+
+
 
   </section>
   </div>
