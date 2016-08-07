@@ -20,52 +20,35 @@ $PDO = db_connect();
   $EquipeIC = $par['EqpIC'];
   $CorretorProjeto = $par['icProjeto'];
 
-
-
-//QUERY DE PROJETOS PENDENTES
- $ChamaProP = "SELECT icbr_pid, pro_id, pro_Nome, pro_ClubNome, pro_Avenida, pro_Status, pro_FileNome FROM icbr_projetos WHERE pro_Distrito='$Distrito'";
+//QUERY DE PROJETOS GERAL
+ $ChamaProP = "SELECT * FROM icbr_projetos WHERE icbr_Gestao='$GVigente'";
  // seleciona os registros
  $QryProP = $PDO->prepare($ChamaProP);
  $QryProP->execute();
 
-//AQUI EU CHAMO OS CLUBES DO MEU DISTRITO
-$QueryClubes = "SELECT icbr_id, icbr_Clube FROM icbr_clube WHERE icbr_Distrito='$Distrito'";
-// seleciona os registros
-$stmt = $PDO->prepare($QueryClubes);
-$stmt->execute();
-    
-//AQUI CHAMA OS CLUBES APROVADOS
-$QtProjetosA = "SELECT COUNT(*) AS total FROM icbr_projetos WHERE pro_Distrito='$Distrito' AND pro_Status= 'A'";
-$QuantAprovados = $PDO->prepare($QtProjetosA);
-$QuantAprovados->execute();
-$QntAprovados = $QuantAprovados->fetchColumn();
-//AQUI TERMINA A QUERY DE CONTAR OS CLUBES APROVADOS
-//AQUI CHAMA OS CLUBES PENDENTES
-$QtProjetosP = "SELECT COUNT(*) AS total FROM icbr_projetos WHERE pro_Distrito='$Distrito' AND pro_Status= 'P' OR 'E' ";
-$QuantPendentes = $PDO->prepare($QtProjetosP);
-$QuantPendentes->execute();
-$QntPendentes = $QuantPendentes->fetchColumn();
-//AQUI TERMINA A QUERY DE CONTAR OS PROJETOS PENDENTES
-//AQUI CHAMA OS CLUBES PENDENTES
-$QtProjetosP = "SELECT COUNT(*) AS total FROM icbr_projetos WHERE pro_Distrito='$Distrito' AND pro_Status= 'R' ";
-$QuantReprovados = $PDO->prepare($QtProjetosP);
-$QuantReprovados->execute();
-$QntReprovados = $QuantPendentes->fetchColumn();
-//AQUI TERMINA A QUERY DE CONTAR OS PROJETOS PENDENTES
+//QUERY DE PROJETOS COM APROVADOS
+ $ChamaAprovados = "SELECT * FROM icbr_projetos WHERE icbr_Gestao='$GVigente' AND pro_Status='A'";
+ // seleciona os registros
+ $QryAprovados = $PDO->prepare($ChamaAprovados);
+ $QryAprovados->execute();
 
+ //QUERY DE PROJETOS COM PROJETOS AGUARDANDO APROVAÇÃO
+ $ChamaAguardando = "SELECT * FROM icbr_projetos WHERE icbr_Gestao='$GVigente' AND pro_Status='E'";
+ // seleciona os registros
+ $QryEnviados = $PDO->prepare($ChamaAguardando);
+ $QryEnviados->execute();
 
+//QUERY DE PROJETOS COM PENDENCIAS
+ $ChamaPendentes = "SELECT * FROM icbr_projetos WHERE icbr_Gestao='$GVigente' AND pro_Status='P'";
+ // seleciona os registros
+ $QryPendentes = $PDO->prepare($ChamaPendentes);
+ $QryPendentes->execute();
 
-
-
-
-      //Vendo a quantidade de projetos Cadastrados +1
-      $ProGeral = "SELECT COUNT(*) AS total FROM icbr_projetos WHERE pro_id IS NOT NULL";
-      $stmt_count = $PDO->prepare($ProGeral);
-      $stmt_count->execute();
-      $ProjGeral = $stmt_count->fetchColumn();
-      $IDP = $ProjGeral+1;
-
-      $DtCad = date('d/m/Y H:i:s');
+ //QUERY DE PROJETOS REPROVADOS
+ $ChamaReprovados = "SELECT * FROM icbr_projetos WHERE icbr_Gestao='$GVigente' AND pro_Status='R'";
+ // seleciona os registros
+ $QryReprovados = $PDO->prepare($ChamaReprovados);
+ $QryReprovados->execute();
 
 ?>
 <!DOCTYPE html>
@@ -82,6 +65,7 @@ $QntReprovados = $QuantPendentes->fetchColumn();
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="../plugins/iCheck/flat/blue.css">
   <link rel="stylesheet" href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+  <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
 </head>
 <body class="hold-transition skin-blue-light fixed sidebar-mini">
 <div class="wrapper">
@@ -211,8 +195,6 @@ $QntReprovados = $QuantPendentes->fetchColumn();
     </section>';
   }
   elseif ($CorretorProjeto == "22") {
-
-
 ?>
   <section class="content">
     <div class="row">
@@ -235,7 +217,198 @@ $QntReprovados = $QuantPendentes->fetchColumn();
     <div class="row">
     <div class="col-md-12 col-sm-6 col-xs-12">
      <div class="info-box"><br />
+      <div class="nav-tabs-custom">
+       <ul class="nav nav-tabs">
+        <li class="active"><a href="#todos" data-toggle="tab">Todos</a></li>
+        <li><a href="#AguardandoRevisao" data-toggle="tab">Aguardando Revisão</a></li>
+        <li><a href="#Aprovados" data-toggle="tab">Aprovados</a></li>
+        <li><a href="#Pendentes" data-toggle="tab">Pendentes</a></li>
+        <li><a href="#Reprovados" data-toggle="tab">Reprovados</a></li>
+       </ul>
+       <div class="tab-content">
+        <div class="tab-pane active" id="todos">
+        <strong>Todos os projetos da gestão: <?php echo $GVigente; ?></strong>
+         <table id="example2" class="table table-bordered table-striped table-responsive">
+          <thead>
+           <tr>
+            <th>ID</th>
+            <th>Distrito/Clube</th>
+            <th>Nome do Projeto</th>
+            <th>Avenida</th>
+            <th>Status</th>
+            <th></th><!-- VAZIO: AQUI ENTRA BOTÕES DE VISUALIZAR E RESOLVER -->
+           </tr>
+          </thead>
+          <tbody>
+           <?php while ($pAtivo = $QryProP->fetch(PDO::FETCH_ASSOC)):
+           echo "<tr>";
+           echo "<td>" . $pAtivo['pro_id'] . "</td>";
+           echo "<td>[<code>" . $pAtivo['pro_Distrito'] . "</code>] Interact Club de " . $pAtivo['pro_ClubNome'] . "</td>";
+           echo "<td>" . $pAtivo['pro_Nome'] . "</td>";
+           echo "<td>" . $pAtivo['pro_Avenida'] . "</td>";
+            $MeuStatus = $pAtivo['pro_Status'];
+            $idProjeto = $pAtivo['pro_id'];
+           if ($MeuStatus == "E") {
+            echo '<td>';
+            echo '<a class="btn btn-block btn-primary btn-sm ">AGUARDANDO REVISÃO</a>';
+            echo '</td>';
+            
+           }
+           elseif ($MeuStatus == "P") {
+            echo "<td>";
+            echo '<a class="btn btn-block btn-warning btn-sm ">PENDENTE</a>';
+            echo "</td>";
+           }
+           elseif ($MeuStatus == "A") {
+            echo "<td>";
+            echo '<a class="btn btn-block btn-success btn-sm ">APROVADO</a>';
+            echo "</td>";
+           }
+           elseif ($MeuStatus == "R") {
+            echo "<td>";
+            echo '<a class="btn btn-block btn-danger btn-sm ">REPROVADO</a>';
+            echo "</td>";
+           }
+           else{
+            echo "<td></td>";
+            
+           }
+           echo '<td>';
+           echo '<a href="VerProjeto.php?ID=' . $idProjeto . '" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i></a>';
+           echo '</td>';
+           echo "<tr>";
+           endwhile;
+           ?>
+          </tbody>
+         </table>
 
+
+
+
+
+        </div>
+        <div class="tab-pane" id="AguardandoRevisao">
+         <table id="aguardando" class="table table-bordered table-striped table-responsive">
+          <thead>
+           <tr>
+            <th>ID</th>
+            <th>Distrito/Clube</th>
+            <th>Nome do Projeto</th>
+            <th>Avenida</th>
+            <th></th><!-- VAZIO: AQUI ENTRA BOTÕES DE VISUALIZAR E RESOLVER -->
+           </tr>
+          </thead>
+          <tbody>
+           <?php while ($pEnv = $QryEnviados->fetch(PDO::FETCH_ASSOC)):
+           echo "<tr>";
+           echo "<td>" . $pEnv['pro_id'] . "</td>";
+           echo "<td>[<code>" . $pEnv['pro_Distrito'] . "</code>] Interact Club de " . $pEnv['pro_ClubNome'] . "</td>";
+           echo "<td>" . $pEnv['pro_Nome'] . "</td>";
+           echo "<td>" . $pEnv['pro_Avenida'] . "</td>";
+            $MeuStatus = $pEnv['pro_Status'];
+            $idProjeto = $pEnv['pro_id'];
+           echo '<td>';
+           echo '<a href="VerProjeto.php?ID=' . $idProjeto . '" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i></a>&nbsp;';
+           echo '<a href="RevisarProjeto.php?ID=' . $idProjeto . '" class="btn bg-orange btn-sm" target="_blank"><i class="fa fa-repeat"> Revisar</i></a>';
+           echo '</td>';
+           echo "<tr>";
+           endwhile;
+           ?>
+          </tbody>
+         </table>  
+        </div>
+        <div class="tab-pane" id="Aprovados">
+        <strong>Todos os projetos APROVADOS da gestão: <?php echo $GVigente; ?></strong>
+         <table id="aprovados" class="table table-bordered table-striped table-responsive">
+          <thead>
+           <tr>
+            <th>ID</th>
+            <th>Distrito/Clube</th>
+            <th>Nome do Projeto</th>
+            <th>Avenida</th>
+            <th></th><!-- VAZIO: AQUI ENTRA BOTÕES DE VISUALIZAR E RESOLVER -->
+           </tr>
+          </thead>
+          <tbody>
+           <?php while ($pAp = $QryAprovados->fetch(PDO::FETCH_ASSOC)):
+           echo "<tr>";
+           echo "<td>" . $pAp['pro_id'] . "</td>";
+           echo "<td>[<code>" . $pAp['pro_Distrito'] . "</code>] Interact Club de " . $pAp['pro_ClubNome'] . "</td>";
+           echo "<td>" . $pAp['pro_Nome'] . "</td>";
+           echo "<td>" . $pAp['pro_Avenida'] . "</td>";
+            $MeuStatus = $pAp['pro_Status'];
+            $idProjeto = $pAp['pro_id'];
+           echo '<td>';
+           echo '<a href="VerProjeto.php?ID=' . $idProjeto . '" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i></a>';
+           echo '</td>';
+           echo "<tr>";
+           endwhile;
+           ?>
+          </tbody>
+         </table>
+        </div>
+        <div class="tab-pane" id="Pendentes">
+        <strong>Todos os projetos PENDENTES da gestão: <?php echo $GVigente; ?></strong>
+         <table id="pendentes" class="table table-bordered table-striped table-responsive">
+          <thead>
+           <tr>
+            <th>ID</th>
+            <th>Distrito/Clube</th>
+            <th>Nome do Projeto</th>
+            <th>Avenida</th>
+            <th></th><!-- VAZIO: AQUI ENTRA BOTÕES DE VISUALIZAR E RESOLVER -->
+           </tr>
+          </thead>
+          <tbody>
+           <?php while ($pPen = $QryPendentes->fetch(PDO::FETCH_ASSOC)):
+           echo "<tr>";
+           echo "<td>" . $pPen['pro_id'] . "</td>";
+           echo "<td>[<code>" . $pPen['pro_Distrito'] . "</code>] Interact Club de " . $pPen['pro_ClubNome'] . "</td>";
+           echo "<td>" . $pPen['pro_Nome'] . "</td>";
+           echo "<td>" . $pPen['pro_Avenida'] . "</td>";
+            $MeuStatus = $pPen['pro_Status'];
+            $idProjeto = $pPen['pro_id'];
+           echo '<td>';
+           echo '<a href="VerProjeto.php?ID=' . $idProjeto . '" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i></a>';
+           echo '</td>';
+           echo "<tr>";
+           endwhile;
+           ?>
+          </tbody>
+         </table>        
+        </div>
+        <div class="tab-pane" id="Reprovados">
+        <strong>Todos os projetos PENDENTES da gestão: <?php echo $GVigente; ?></strong>
+         <table id="reprovados" class="table table-bordered table-striped table-responsive">
+          <thead>
+           <tr>
+            <th>ID</th>
+            <th>Distrito/Clube</th>
+            <th>Nome do Projeto</th>
+            <th>Avenida</th>
+            <th></th><!-- VAZIO: AQUI ENTRA BOTÕES DE VISUALIZAR E RESOLVER -->
+           </tr>
+          </thead>
+          <tbody>
+           <?php while ($pRep = $QryReprovados->fetch(PDO::FETCH_ASSOC)):
+           echo "<tr>";
+           echo "<td>" . $pRep['pro_id'] . "</td>";
+           echo "<td>[<code>" . $pRep['pro_Distrito'] . "</code>] Interact Club de " . $pRep['pro_ClubNome'] . "</td>";
+           echo "<td>" . $pRep['pro_Nome'] . "</td>";
+           echo "<td>" . $pRep['pro_Avenida'] . "</td>";
+            $MeuStatus = $pRep['pro_Status'];
+            $idProjeto = $pRep['pro_id'];
+           echo '<td>';
+           echo '<a href="VerProjeto.php?ID=' . $idProjeto . '" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i></a>';
+           echo '</td>';
+           echo "<tr>";
+           endwhile;
+           ?>
+          </tbody>
+         </table>                    
+        </div>
+       </div>
+      </div>
      </div>
     </div>
    </div>
@@ -246,6 +419,9 @@ $QntReprovados = $QuantPendentes->fetchColumn();
 ?>
   </div>
 <?php include_once '../footer.php'; ?>
+
+
+
 </div>
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -260,16 +436,17 @@ $QntReprovados = $QuantPendentes->fetchColumn();
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="../plugins/fastclick/fastclick.min.js"></script>
 <script>
-      $(function () {
-        $('#projetos').DataTable({
-          "paging": true,
-          "lengthChange": true,
-          "searching": true,
-          "ordering": true,
-          "info": true,
-          "autoWidth": true
-        });
-      });
-    </script>
+  $(function () {
+    $("#todos").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
 </body>
 </html>

@@ -5,7 +5,7 @@ define('DB_HOST', 'localhost:8889');
 define('DB_USER', 'root');
 define('DB_PASS', 'root');
 define('DB_NAME', 'interact');
-$GVigente = "2016/17";
+$GVigente = "1617";
   
 // habilita todas as exibições de erros
 ini_set('display_errors', true);
