@@ -151,14 +151,22 @@ $DataCadastro = date("d/m/Y - h:i:s");
           <tbody>
            <?php while ($user = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
            <tr>
-            <td><?php echo $user['icbr_id'] ?></td>
+            <td>
+             <?php 
+             echo $user['icbr_id'];
+             $IDClube = $user['icbr_id'];
+             ?>
+            </td>
             <td><?php echo $user['icbr_Clube'] ?></td>
             <td><?php echo $user['icbr_Semana'] . ' - ' . $user['icbr_Horario'] . ' (' . $user['icbr_Periodo'] . ')';?></td>
             <td><?php echo $user['icbr_Presidente'] ?></td>
             <td>
-             <a href='VerClube.php?ID=<?php echo $user['icbr_id'] ?>' class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i>
+             <a class="btn btn-default btn-sm" href="javascript:abrir('VerClube.php?ID=<?php echo $IDClube; ?>');">
+             <i class="fa fa-search"></i> Visualizar Clube
              </a>
-             <span class="btn btn-danger btn-sm" onclick="window.open('DesCl.php?ID=<?php echo $user['icbr_id'] ?>', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-close"></i></span>
+             <a class="btn btn-danger btn-sm" href="javascript:abrir('DesCl.php?ID=<?php echo $IDClube; ?>');">
+             <i class="fa fa-close"></i> Desativar Clube
+             </a>
             </td>
            </tr>
            <?php endwhile; ?>
@@ -179,14 +187,22 @@ $DataCadastro = date("d/m/Y - h:i:s");
           <tbody>
            <?php while ($user2 = $stmt2->fetch(PDO::FETCH_ASSOC)): ?>
            <tr>
-            <td><?php echo $user2['icbr_id'] ?></td>
+            <td>
+             <?php 
+              echo $user2['icbr_id'];
+              $IDClube2 = $user2['icbr_id'];
+             ?>
+            </td>  
             <td><?php echo $user2['icbr_Clube'] ?></td>
             <td><?php echo $user2['icbr_Semana'] . ' - ' . $user2['icbr_Horario'] . ' (' . $user2['icbr_Periodo'] . ')';?></td>
             <td><?php echo $user2['icbr_Presidente'] ?></td>
             <td>
-             <a href='VerClube.php?ID=<?php echo $user2['icbr_id'] ?>' class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i>
+             <a class="btn btn-default btn-sm" href="javascript:abrir('VerClube.php?ID=<?php echo $IDClube2; ?>');">
+             <i class="fa fa-search"></i> Visualizar Clube
              </a>
-             <span class="btn btn-success btn-sm" onclick="window.open('AtCl.php?ID=<?php echo $user2['icbr_id'] ?>', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-check-circle"></i></span>
+             <a class="btn btn-success btn-sm" href="javascript:abrir('AtCl.php?ID=<?php echo $IDClube2; ?>');">
+             <i class="fa fa-thumbs-up"></i> Reativar Clube
+             </a>
             </td>
            </tr>
            <?php endwhile; ?>
@@ -314,5 +330,24 @@ $DataCadastro = date("d/m/Y - h:i:s");
         });
       });
     </script>
+
+    <script language="JavaScript">
+function abrir(URL) {
+ 
+  var width = 150;
+  var height = 250;
+ 
+  var left = 99;
+  var top = 99;
+ 
+  window.open(URL,'janela', 'width='+width+', height='+height+', top='+top+', left='+left+', scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
+ 
+}
+</script>
+    
+    
+    
+    
+    
 </body>
 </html>
