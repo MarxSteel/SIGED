@@ -1,52 +1,35 @@
 <?php
-/* AreaRestrita.php */
 require("../restritos.php"); 
 require_once '../init.php';
 $PDO = db_connect();
+include_once '../ChamaPrivilegios.php';
 
  $query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");
-      $query->execute();
+ $query->execute();
+  $par = $query->fetch();
+    $Distrito = $par['Distrito'];
+    $LoginNome = $par['Nome'];
+    $LoginCargoDistrito = $par['CargoDistrito'];
+    $LoginClube = $par['Clube'];
+    $LoginCargoClube = $par['CargoClube'];
+    $IDUSer = $par['codLogin'];
+    $Foto = $par['Foto'];
 
-          $par = $query->fetch();
-            $Distrito = $par['Distrito'];
-            $LoginNome = $par['Nome'];
-            $LoginCargoDistrito = $par['CargoDistrito'];
-            $LoginClube = $par['Clube'];
-            $LoginCargoClube = $par['CargoClube'];
-            $IDUSer = $par['codLogin'];
-            $Foto = $par['Foto'];
+$CodClub = $_GET['ID']; 
 
+//CHAMANDO DADOS DE INFORMAÇÃO DO CLUBE
 
-$DataCadastro = date("d/m/Y - h:i:s");
-$IDClube = $_GET['ID'];
-
- $dadosclube = $PDO->prepare("SELECT * FROM icbr_clube WHERE icbr_id='$IDClube'");
-      $dadosclube->execute();
-
-          $campo = $dadosclube->fetch();
-      $NomeClube = $campo['icbr_Clube'];
-      $RotaryPadrinho = $campo['icbr_RotaryPadrinho'];
-      $DatadeFundacao = $campo['icbr_DataFundado'];
-      $DistritoClube = $campo['icbr_Distrito'];
-      $PresidenteClube = $campo['icbr_Presidente'];
-      $SecretarioClube = $campo['icbr_Secretario'];
-      $TesoureiroClube = $campo['icbr_Tesoureiro'];
-
-      // CHAMA PERIODO DE REUNIÕES
-
-      $ClubeEndereco = $campo['icbr_CEnd'];
-      $ClubePeriodo = $campo['icbr_Periodo'];
-      $DiaSemana = $campo['icbr_Semana'];
-      $HorarioSemana = $campo['icbr_Horario'];
-      $EnderecoClube = $campo['icbr_CEnd'];
-      $NumeroClube = $campo['icbr_CNum'];
-      $BairroClube =  $campo['icbr_Bairro'];
-      $CEPClube = $campo['icbr_CEP'];
-      $EstadoClube = $campo['icbr_UF'];
-      $CidadeClube = $campo['icbr_Cidade'];
-      $CodClub = $campo['icbr_id'];
-      $StatusClub = $campo['icbr_Status'];
-
+$ChamaClub = $PDO->prepare("SELECT * FROM icbr_clube WHERE icbr_id='$CodClub'");
+ $ChamaClub->execute();
+  $Clube= $ChamaClub->fetch();
+  $ClubeNome = $Clube['icbr_Clube'];
+  $RotaryPadrinho = $Clube['icbr_RotaryPadrinho'];
+  $DataFundacao = $Clube['icbr_DataFundado'];
+  $StatusClub = $Clube['icbr_Status'];
+  $SecretarioClub = $Clube['icbr_Secretario'];
+  $PresidenteClub = $Clube['icbr_Presidente'];
+  $TesoureiroClub = $Clube['icbr_Tesoureiro'];
+$teste='teste';
 
 ?>
 <!DOCTYPE html>
@@ -61,181 +44,158 @@ $IDClube = $_GET['ID'];
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
-<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
 <body class="hold-transition skin-blue layout-top-nav">
  <div class="wrapper">
   <header class="main-header">
    <nav class="navbar navbar-static-top">
     <div class="container">
      <div class="navbar-header">
-      <span class="logo-lg">
-       <img src="../dist/img/logo/ICLogo.png" width="200">
-      </span>
+   <span class="logo-lg"><img src="../dist/img/logo/ICLogo.png" width="200"></span>
      </div>
-
-<div class="navbar-custom-menu">
- <ul class="nav navbar-nav">
-  <li class="dropdown user user-menu">
-   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-    <img src="../uploads/<?php echo $Foto; ?>" class="user-image" alt="User Image">
-     <span class="hidden-xs"><?php echo $LoginNome; ?></span>
-   </a>
-   <ul class="dropdown-menu">
-    <li class="user-header">
-     <img src="../uploads/<?php echo $Foto; ?>" class="img-circle" alt="User Image">
-     <p>
-      <?php echo $LoginNome . " - " . $LoginCargoDistrito; ?>
-      <small>Interact Club de <?php echo $LoginClube . "<br /> Distrito " . $Distrito; ?></small>
-     </p>
-    </li>
-    <li class="user-body">
-     <div class="row">
-      <div class="col-xs-12 text-left">
-      Interact Club de <?php echo $LoginClube; ?><br />
-      <strong><?php echo $LoginCargoClube; ?></strong><br />
-      </div>
+     <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+       <li class="dropdown user user-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="hidden-xs">Olá, <?php echo $LoginNome; ?></span></a>
+       </li>
+      </ul>
      </div>
-    </li>
-    <li class="user-footer">
-     <div class="pull-left">
-      <a href="../MeuPerfil.php" class="btn btn-success btn-flat">Editar perfil</a>
-     </div>
-     <div class="pull-right">
-      <a href="../logout.php" class="btn btn-danger btn-flat">Sair</a>
-     </div>
-    </li>
-   </ul>
-  </li>
- </ul>
-</div>
-      </div>
-    </nav>
+    </div>
+   </nav>
   </header>
   <div class="content-wrapper">
-    <div class="container">
-      <section class="content-header">
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-home"></i> Início</a></li>
-          <li><a href="#">Meu Distrito</a></li>
-          <li><a href="#">Clubes do Distrito</a></li>
-          <li class="active">Inativar Clube</li>
-        </ol>
-      </section>
-      <!-- Main content -->
-   <section class="content">
-    <div class="callout callout-warning">
-          <h4>Atenção!</h4>
-          <p>Se concordar, todos os associados deste club serão marcados como "Ativos".</p>
-    </div>
-    <div class="box box-default">
+   <div class="container">
+    <?php
+       if ($VarClub === '22'){
+        ?>
+    <section class="content">
+     <div class="box box-default">
      <div class="box-header with-border">
-      <h2 class="box-title">Interact Club de <?php echo $NomeClube; ?></h2>          
-      <small class="pull-right"><strong>Distrito <?php echo $DistritoClube; ?></strong></small>
+      <h2 class="box-title">#<?php echo $CodClub; ?> - <strong> Interact Club de <?php echo $ClubeNome; ?></strong></h2>
      </div>
      <div class="box-body">
-      <div class="row invoice-info">
-       <div class="col-sm-4 invoice-col">
-        <address>
-         <strong>Clube Patrocinador: </strong><br />
-          <?php echo $RotaryPadrinho; ?><br /><br />
-         <strong>Data de Fundação: </strong><br />
-          <?php echo $DatadeFundacao; ?><br /><br />
-         <strong>Código Interact Brasil: </strong><br />
-          <?php echo $CodClub; ?><br /><br />
-        </address>
-       </div>
-       <div class="col-sm-5 invoice-col">
-        <address>
-         <strong>Endereço</strong><br>
-          <?php echo $EnderecoClube; ?><br />
-          Nº.: <?php echo $NumeroClube; ?>, CEP: <?php echo $NumeroClube; ?><br />
-          Bairro <?php echo $BairroClube; ?><br />
-          <?php echo $CidadeClube . " - " . $EstadoClube; ?><br />
-         <br>
-          Status do Club<br>
-         <?php
-          if ($StatusClub == "A") {
-          echo '<div class="btn btn-block btn-success">ATIVO</div>';
+      <div class="col-xs-9">
+       <li class="list-group-item">
+        <b>Rotary Club Patrocinador:</b>
+        <a class="pull-right"><?php echo $RotaryPadrinho; ?></i></a>
+       </li>
+       <li class="list-group-item">
+        <b>Data de Fundação:</b> 
+        <a class="pull-right"><strong><code><?php echo $DataFundacao; ?></code></strong></i></a>
+       </li>
+       <li class="list-group-item">
+        <b>Status:</b>
+        <a class="pull-right">
+         <?php 
+          if($StatusClub === 'A')
+          {
+            echo '<span class="btn btn-success btn-xs btn-block">ATIVO</span>';  
           }
-          elseif ($StatusClub == "D") {
-          echo '<div class="btn btn-block btn-danger">DESATIVADO</div>';
-
+          elseif($StatusClub === 'D')
+          {
+            echo '<span class="btn bg-orange btn-xs btn-block">INATIVO</span>';  
           }
           else{
-            #
+              
           }
-          ?>
-        </address>
+         ?>    
+        </a>
+       </li>
+      </div>
+      <div class="col-xs-3">
+       <li class="list-group-item">
+             <img src="<?php echo qrcode("http://interactbrasil.org/clubes/VerClube.php?ID=<?php echo $CodClub; ?>","100"); ?>" />
+
+       </li>
        </div>
-       <div class="col-sm-3 invoice-col">
-        <address>
-         <?php
-          function qrcode($url, $size){
-          if($url != "" && $size != ""){
-          return "http://chart.apis.google.com/chart?cht=qr&chl=".$url."&chs=150x150";
-             }
-            }
-         ?>
-         <img src="<?php echo qrcode("http://interactbrasil.org/clubes/VerClube.php?ID=<?php echo $IDClube; ?>","200"); ?>" />
-        </address>
-       </div>
-       <div class="col-sm-12 invoice-col">
-        <form name="inativaClub" id="name" method="post" action="" enctype="multipart/form-data">
-         <div>
-          <input name="enviar" type="submit" class="btn bg-green btn-lg btn-block" id="enviar" value="Reativar Clube" />
-         </div>
-        </form>
-        <?php
-         if(@$_POST["enviar"])
-           {
-            $executa = $PDO->query("UPDATE icbr_clube SET icbr_Status='A' WHERE icbr_id='$IDClube' ");
+      <div class="col-xs-12">
+        <h4>CONSELHO DIRETOR</h4>
+      </div>
+      <div class="col-xs-4">
+       <li class="list-group-item">
+        <b>PRESIDENTE</b> 
+       </li>
+       <li class="list-group-item">
+        <?php echo $PresidenteClub; ?>
+       </li>
+      </div>
+      <div class="col-xs-4">
+       <li class="list-group-item">
+        <b>SECRETÁRIO</b> 
+       </li>
+       <li class="list-group-item">
+        <?php echo $SecretarioClub; ?>
+       </li>
+      </div>
+      <div class="col-xs-4">
+       <li class="list-group-item">
+        <b>TESOUREIRO</b> 
+       </li>
+       <li class="list-group-item">
+        <?php echo $TesoureiroClub; ?>
+       </li>
+      </div>
+     <div class="col-xs-12"> 
+      <h4>LISTA DE ASSOCIADOS</h4>
+     </div>
+      <div class="col-xs-12">
+       <form name="cadastrar_anuncio" id="name" method="post" action="" enctype="multipart/form-data">
+        <table width="400" border="0" align="center">
+         <tr>
+          <div class="col-xs-12"><br />
+            <input name="enviar" type="submit" class="btn btn-success btn-lg btn-block" id="enviar" value="REATIVAR CLUB"  />
+          </div>
+         </tr>
+        </table>
+       </form>
+       <?php 
+        if(@$_POST["enviar"]){
+          $executa = $PDO->query("UPDATE icbr_clube SET icbr_Status='A' WHERE icbr_id='$CodClub' ");
              if($executa)
                {
-                echo '<script type="text/javascript">alert("Clube Desativado. Agora Inativaremos Associados");</script>';
-                $executa2 = $PDO->query("UPDATE icbr_associado SET icbr_AssStatus='A' WHERE icbr_AssClubeID='$IDClube'");
-                 if ($executa2)
-                  {
-                    echo '<script type="text/javascript">alert("Associados Inativados");</script>';
-                    echo '<script type="text/javascript">window.close();</script>';
-                  }
-                  else
-                  {
-                    echo '<script type="text/javascript">alert("Não foi possível Inativar os Associados");</script>';
-                  }
-               }
-               else
-               {
-                echo '<script type="text/javascript">alert("! <?php print_r($PDO->errorInfo()); ?>");</script>';
-               }
-              }
-             ?>
-
-
-
-
-
-       </div>
+          echo '<script type="text/javascript">alert("Clube reativado com sucesso!");</script>';
+          echo '<script type="text/javascript">window.close();</script>'; 
+          }
+          else{
+          echo '<script type="text/javascript">alert("Erro ao reativar club, entre em contato com a Interact Brasil");</script>';
+          }
+      }
+      ?>
+           
+      </div>
       </div>
      </div>
-    </div>
-   </section>
+
+
+    </section>
+    <?php
+       }
+       else{
+      echo '<section class="content">';
+      echo '<div class="box box-default">';
+      echo '<div class="box-header with-border">';
+      echo '<h2 class="box-title">ATIVAR CLUB</h2>';
+      echo '</div>';
+      echo '<div class="box-body">';
+      echo '<div class="alert alert-danger alert-dismissible">';
+      echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+      echo '<h4><i class="icon fa fa-ban"></i> Erro!</h4>';
+      echo '<h3>Você não tem privilégios para acessar esta página </h3><br />';
+      echo '</div>';
+      echo '</div>';
+      echo '</div>';
+      echo '</section>';
+       }
+       ?>
   </div>
  </div>
-<?php include_once '../footer.php'; ?>
+<?php 
+include_once '../footer.php'; ?>
 </div>
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<script src="../plugins/fastclick/fastclick.js"></script>
 <script src="../dist/js/app.min.js"></script>
-<script src="../dist/js/demo.js"></script>
 </body>
 </html>
