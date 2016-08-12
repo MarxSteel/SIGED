@@ -1,20 +1,19 @@
 <?php
-/* AreaRestrita.php */
 require("../restritos.php"); 
 require_once '../init.php';
 $PDO = db_connect();
+include_once '../ChamaPrivilegios.php';
 
  $query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");
-      $query->execute();
-
-          $par = $query->fetch();
-            $Distrito = $par['Distrito'];
-            $LoginNome = $par['Nome'];
-            $LoginCargoDistrito = $par['CargoDistrito'];
-            $LoginClube = $par['Clube'];
-            $LoginCargoClube = $par['CargoClube'];
-            $IDUSer = $par['codLogin'];
-            $Foto = $par['Foto'];
+ $query->execute();
+  $par = $query->fetch();
+    $Distrito = $par['Distrito'];
+    $LoginNome = $par['Nome'];
+    $LoginCargoDistrito = $par['CargoDistrito'];
+    $LoginClube = $par['Clube'];
+    $LoginCargoClube = $par['CargoClube'];
+    $IDUSer = $par['codLogin'];
+    $Foto = $par['Foto'];
 
 // AQUI DECLARO A QUERY DE DADOS DOS CLUBES:
 $QueryClubes = "SELECT icbr_id, icbr_Clube, icbr_Presidente, icbr_Semana, icbr_Periodo, icbr_Horario FROM icbr_clube WHERE icbr_Distrito='$Distrito' AND icbr_Status='A' ORDER BY icbr_Clube ASC";
@@ -42,13 +41,6 @@ $DataCadastro = date("d/m/Y - h:i:s");
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="../plugins/iCheck/flat/blue.css">
   <link rel="stylesheet" href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
 <body class="hold-transition skin-blue-light fixed sidebar-mini">
 <div class="wrapper">
@@ -61,100 +53,63 @@ $DataCadastro = date("d/m/Y - h:i:s");
    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
     <span class="sr-only">Minimizar Navegação</span>
    </a>
-<div class="navbar-custom-menu">
- <ul class="nav navbar-nav">
-  <li class="dropdown user user-menu">
-   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-    <img src="../uploads/<?php echo $Foto; ?>" class="user-image" alt="User Image">
-     <span class="hidden-xs"><?php echo $LoginNome; ?></span>
-   </a>
-   <ul class="dropdown-menu">
-    <li class="user-header">
-     <img src="../uploads/<?php echo $Foto; ?>" class="img-circle" alt="User Image">
-     <p>
-      <?php echo $LoginNome . " - " . $LoginCargoDistrito; ?>
-      <small>Interact Club de <?php echo $LoginClube . "<br /> Distrito " . $Distrito; ?></small>
-     </p>
-    </li>
-    <li class="user-body">
-     <div class="row">
-      <div class="col-xs-12 text-left">
-      Interact Club de <?php echo $LoginClube; ?><br />
-      <strong><?php echo $LoginCargoClube; ?></strong><br />
-      </div>
-     </div>
-    </li>
-    <li class="user-footer">
-     <div class="pull-left">
-      <a href="../MeuPerfil.php" class="btn btn-success btn-flat">Editar perfil</a>
-     </div>
-     <div class="pull-right">
-      <a href="../logout.php" class="btn btn-danger btn-flat">Sair</a>
-     </div>
-    </li>
-   </ul>
-  </li>
- </ul>
-</div>   </nav>
-  </header>
-  <aside class="main-sidebar">
-   <section class="sidebar">
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="../uploads/<?php echo $Foto; ?>" class="img-circle" alt="User Image">
+   <div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+     <li class="dropdown user user-menu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+       <img src="../uploads/<?php echo $Foto; ?>" class="user-image" alt="User Image">
+       <span class="hidden-xs"><?php echo $LoginNome; ?></span>
+      </a>
+      <ul class="dropdown-menu">
+       <li class="user-header">
+        <img src="../uploads/<?php echo $Foto; ?>" class="img-circle" alt="User">
+        <p>
+         <?php echo $LoginNome . " - " . $LoginCargoDistrito; ?>
+         <small>Interact Club de <?php echo $LoginClube . "<br /> Distrito " . $Distrito; ?></small>
+        </p>
+       </li>
+       <li class="user-body">
+        <div class="row">
+         <div class="col-xs-12 text-left">
+          Interact Club de <?php echo $LoginClube; ?><br />
+          <strong><?php echo $LoginCargoClube; ?></strong><br />
+         </div>
         </div>
-        <div class="pull-left info">
-          <p><?php echo $LoginNome; ?></p>
+       </li>
+       <li class="user-footer">
+        <div class="pull-left">
+         <a href="../MeuPerfil.php" class="btn btn-success btn-flat">Editar perfil</a>
         </div>
-      </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-        Distrito <?php echo $Distrito; ?><br /><?php echo $LoginCargoDistrito; ?>
+        <div class="pull-right">
+         <a href="../logout.php" class="btn btn-danger btn-flat">Sair</a>
         </div>
-      </form>     <ul class="sidebar-menu">
-      <li class="header"></li>
-      <li><a href="../dashboard.php"><i class="fa fa-home"></i>Início</a></li>
-      <li><a href="../MeuPerfil.php"><i class="fa fa-user"></i>Meu Perfil</a></li>
-      <li class="active treeview">
-        <a href="#">
-         <i class="fa fa-building"></i> <span>Distrito <?php echo $Distrito; ?></span>
-         <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="Clubes.php"><i class="fa fa-industry"></i> Clubes</a></li>
-            <li><a href="Associados.php"><i class="fa fa-users"></i> Associados</a></li>
-            <li><a href="Secretaria.php"><i class="fa fa-book"></i> Secretaria</a></li>
-            <li><a href="Tesouraria.php"><i class="fa fa-dollar"></i> Tesouraria</a></li>
-          </ul>
-        </li>
-        <li><a href="Projetos.php"><i class="fa fa-archive"></i>Arquivo de Projetos</a></li>
-        <li><a href="../ImagemPublica.php"><i class="fa fa-download"></i> Material de Apoio</a></li>
+       </li>
       </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Cadastro de Clubs
-        <small>Distrito <?php echo $Distrito; ?></small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-home"></i> Início</a></li>
-        <li>Distrito <?php echo $Distrito; ?></li>
-        <li class="active">Clubs do Distrito</li>
-      </ol>
-    </section>
-  <section class="content">
-    <div class="row">
-     <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
+     </li>
+    </ul>
+   </div>   
+  </nav>
+ </header>
+ <aside class="main-sidebar"><section class="sidebar"><?php include_once 'InfoBar.php'; ?></section></aside>
+ <div class="content-wrapper">
+ <section class="content-header">
+  <h1>
+   Cadastro de Clubs
+   <small>Distrito <?php echo $Distrito; ?></small>
+  </h1>
+  <ol class="breadcrumb">
+   <li><a href="#"><i class="fa fa-home"></i> Início</a></li>
+   <li>Distrito <?php echo $Distrito; ?></li>
+   <li class="active">Clubs do Distrito</li>
+  </ol>
+ </section>
+ <section class="content"> 
+  <div class="row">
+   <?php
+    if($VarClub === '22'){
+   ?> 
+   <div class="col-md-4 col-sm-6 col-xs-12">
+    <div class="info-box">
        <a data-toggle="modal" data-target="#NovoClub">
         <span class="info-box-icon btn-primary">
          <i class="fa fa-plus"></i>
@@ -180,9 +135,6 @@ $DataCadastro = date("d/m/Y - h:i:s");
         <li class="active"><a href="#Ativos" data-toggle="tab">Clubes Ativos</a></li>
         <li><a href="#Inativos" data-toggle="tab">Clubes Inativos</a></li>
         <li class="pull-left header">LISTA DE CLUBS</li>
-          <span data-toggle="modal" data-target="#ImportaClub" class="btn btn-danger btn-sm">
-           <i class="fa fa-cloud-upload">Importar Excel</i>
-          </span>
        </ul>
        <div class="tab-content">
         <div class="tab-pane active" id="Ativos">
@@ -199,14 +151,22 @@ $DataCadastro = date("d/m/Y - h:i:s");
           <tbody>
            <?php while ($user = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
            <tr>
-            <td><?php echo $user['icbr_id'] ?></td>
+            <td>
+             <?php 
+             echo $user['icbr_id'];
+             $IDClube = $user['icbr_id'];
+             ?>
+            </td>
             <td><?php echo $user['icbr_Clube'] ?></td>
             <td><?php echo $user['icbr_Semana'] . ' - ' . $user['icbr_Horario'] . ' (' . $user['icbr_Periodo'] . ')';?></td>
             <td><?php echo $user['icbr_Presidente'] ?></td>
             <td>
-             <a href='VerClube.php?ID=<?php echo $user['icbr_id'] ?>' class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i>
+             <a class="btn btn-default btn-sm" href="javascript:abrir('VerClube.php?ID=<?php echo $IDClube; ?>');">
+             <i class="fa fa-search"></i> Visualizar Clube
              </a>
-             <span class="btn btn-danger btn-sm" onclick="window.open('DesCl.php?ID=<?php echo $user['icbr_id'] ?>', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-close"></i></span>
+             <a class="btn btn-danger btn-sm" href="javascript:abrir('DesCl.php?ID=<?php echo $IDClube; ?>');">
+             <i class="fa fa-close"></i> Desativar Clube
+             </a>
             </td>
            </tr>
            <?php endwhile; ?>
@@ -227,14 +187,22 @@ $DataCadastro = date("d/m/Y - h:i:s");
           <tbody>
            <?php while ($user2 = $stmt2->fetch(PDO::FETCH_ASSOC)): ?>
            <tr>
-            <td><?php echo $user2['icbr_id'] ?></td>
+            <td>
+             <?php 
+              echo $user2['icbr_id'];
+              $IDClube2 = $user2['icbr_id'];
+             ?>
+            </td>  
             <td><?php echo $user2['icbr_Clube'] ?></td>
             <td><?php echo $user2['icbr_Semana'] . ' - ' . $user2['icbr_Horario'] . ' (' . $user2['icbr_Periodo'] . ')';?></td>
             <td><?php echo $user2['icbr_Presidente'] ?></td>
             <td>
-             <a href='VerClube.php?ID=<?php echo $user2['icbr_id'] ?>' class="btn btn-default btn-sm" target="_blank"><i class="fa fa-search"></i>
+             <a class="btn btn-default btn-sm" href="javascript:abrir('VerClube.php?ID=<?php echo $IDClube2; ?>');">
+             <i class="fa fa-search"></i> Visualizar Clube
              </a>
-             <span class="btn btn-success btn-sm" onclick="window.open('AtCl.php?ID=<?php echo $user2['icbr_id'] ?>', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=800, HEIGHT=650');"><i class="fa fa-check-circle"></i></span>
+             <a class="btn btn-success btn-sm" href="javascript:abrir('AtCl.php?ID=<?php echo $IDClube2; ?>');">
+             <i class="fa fa-thumbs-up"></i> Reativar Clube
+             </a>
             </td>
            </tr>
            <?php endwhile; ?>
@@ -312,6 +280,20 @@ $DataCadastro = date("d/m/Y - h:i:s");
       </div>
      </div>
     </div>
+<?php
+    }
+    else {
+     echo '<div class="col-xs-12">';
+     echo '<div class="info-box">';
+     echo '<div class="alert alert-danger alert-dismissible">';
+     echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+     echo '<h4><i class="icon fa fa-ban"></i>Erro!</h4>';
+     echo '<h3> Você não tem privilégios suficientes para abrir esta página</h3>';
+     echo '</div>';
+     echo '</div>';
+     echo '</div>';
+    }
+    ?>
    </section>
   </div>
 <?php include_once '../footer.php'; ?>
@@ -348,27 +330,24 @@ $DataCadastro = date("d/m/Y - h:i:s");
         });
       });
     </script>
-<!-- ÁREA DE MODALS -->
-<!-- MODAL DE GERAR RELATORIO -->
- <div class="modal fade" id="ImportaClub" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-   <div class="modal-content">
-    <div class="modal-header">
-     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <code><span aria-hidden="true">&times;</span></code>
-     </button>
-     <h4 class="modal-title" id="myModalLabel">Importar Arquivo Excel</h4>
-    </div>
-    <div class="modal-body">
-             EM BREVE
-    </div>
-    <div class="modal-footer"></div>
-   </div>
-  </div>
- </div>
-        <!-- FIM DO MODAL DE GERAR RELATÓRIO -->
 
-
-
+    <script language="JavaScript">
+function abrir(URL) {
+ 
+  var width = 800;
+  var height = 650;
+ 
+  var left = 99;
+  var top = 99;
+ 
+  window.open(URL,'janela', 'width='+width+', height='+height+', top='+top+', left='+left+', scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
+ 
+}
+</script>
+    
+    
+    
+    
+    
 </body>
 </html>

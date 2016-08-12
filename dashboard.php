@@ -1,26 +1,20 @@
 <?php
-/* AreaRestrita.php */
 require("restritos.php"); 
 require_once 'init.php';
 $PDO = db_connect();
-
- $query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");
-      $query->execute();
-
-          $par = $query->fetch();
-            $Distrito = $par['Distrito'];
-            $LoginNome = $par['Nome'];
-            $LoginCargoDistrito = $par['CargoDistrito'];
-            $LoginClube = $par['Clube'];
-            $LoginCargoClube = $par['CargoClube'];
-            $IDUSer = $par['codLogin'];
-            $Foto = $par['Foto'];
-
-
+include_once 'ChamaPrivilegios.php';
+$query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");
+$query->execute();
+ $par = $query->fetch();
+    $Distrito = $par['Distrito'];
+    $LoginNome = $par['Nome'];
+    $LoginCargoDistrito = $par['CargoDistrito'];
+    $LoginClube = $par['Clube'];
+    $LoginCargoClube = $par['CargoClube'];
+    $IDUSer = $par['codLogin'];
+    $Foto = $par['Foto'];
 //Chamando Privilégios de Página
   $CorrigeProjetos = $par['icProjeto'];
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -54,46 +48,24 @@ $PDO = db_connect();
   <aside class="main-sidebar">
    <section class="sidebar">
     <?php include_once 'InfoBar.php'; ?>
-     <ul class="sidebar-menu">
-      <li class="header"></li>
-      <li class="active"><a href="#"><i class="fa fa-home"></i>Início</a></li>
-      <li><a href="MeuPerfil.php"><i class="fa fa-user"></i>Meu Perfil</a></li>
-      <li class="treeview">
-        <a href="#">
-         <i class="fa fa-building"></i> <span>Distrito <?php echo $Distrito; ?></span>
-         <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="Distrito/Clubes.php"><i class="fa fa-industry"></i> Clubes</a></li>
-            <li><a href="Distrito/Associados.php"><i class="fa fa-users"></i> Associados</a></li>
-            <li><a href="Distrito/Secretaria.php"><i class="fa fa-book"></i> Secretaria</a></li>
-            <li><a href="Distrito/Tesouraria.php"><i class="fa fa-dollar"></i> Tesouraria</a></li>
-          </ul>
-        </li>
-        <li><a href="Distrito/Projetos.php"><i class="fa fa-archive"></i>Arquivo de Projetos</a></li>
-        <li><a href="ImagemPublica.php"><i class="fa fa-download"></i> Material de Apoio</a></li>
-      </ul>
     </section>
-    <!-- /.sidebar -->
   </aside>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Página Inicial
-        <small>Distrito <?php echo $Distrito; ?></small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-home"></i> Início</a></li>
-        <li class="active">Distrito <?php echo $Distrito; ?></li>
-      </ol>
+   <section class="content-header">
+    <h1>
+    Página Inicial
+    <small>Distrito <?php echo $Distrito; ?></small>
+    </h1>
+    <ol class="breadcrumb">
+     <li><a href="#"><i class="fa fa-home"></i> Início</a></li>
+     <li class="active">Distrito <?php echo $Distrito; ?></li>
+    </ol>
     </section>
   <section class="content">
     <div class="row">
+    <?php
+      if($VarClub === '22'){
+    ?>
      <div class="col-md-4 col-sm-6 col-xs-12">
       <div class="info-box">
        <a href="Distrito/Clubes.php" >
@@ -105,6 +77,13 @@ $PDO = db_connect();
       </div>
      </div>
     </div>
+    <?php 
+     }
+     else{
+     }
+     if($VarAssociado === '22')
+     {
+    ?>
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="Distrito/Associados.php" >
@@ -115,6 +94,13 @@ $PDO = db_connect();
       <div class="info-box-content"><h4>Lista de Associados</h4></div>
      </div>
     </div>
+    <?php
+     }
+     else{
+     }
+     if($VarSecretaria === '22')
+     {
+    ?>
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="Distrito/Secretaria.php" >
@@ -125,6 +111,14 @@ $PDO = db_connect();
       <div class="info-box-content"><h4>Secretaria</h4></div>
      </div>
     </div>
+    <?php
+     }
+     else
+     {    
+     }
+     if($VarTesouraria === '22')
+     {
+    ?>    
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="Distrito/Tesouraria.php" >
@@ -135,6 +129,12 @@ $PDO = db_connect();
       <div class="info-box-content"><h4>Tesouraria</h4></div>
      </div>
     </div>
+    <?php
+     }
+     else
+     {    
+     }
+     ?>
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="ImagemPublica.php" >
@@ -155,36 +155,9 @@ $PDO = db_connect();
       <div class="info-box-content">Projetos<h4>Arquivo Nacional</h4></div>
      </div>
     </div>
-    <?php
-    if ($CorrigeProjetos == "N") {
-      //SE E SOMENTE SE CORRIGEPROJETOS FOR N ENTÃO NÃO FAÇA NADA
-    }
-    elseif ($CorrigeProjetos == "22") {
-    echo '
-    <div class="col-md-4 col-sm-6 col-xs-12">
-     <div class="info-box">
-      <a href="icbrasil/Projetos.php">
-       <span class="info-box-icon btn bg-purple">
-        <i class="fa fa-archive"></i>
-       </span>
-      </a>
-      <div class="info-box-content">INTERACT BRASIL<h4>CORRIGIR PROJETOS</h4></div>
-     </div>
-    </div>';
-    }
-
-
-    ?>
-
    </div>
-
-
-
-
-
-
   </section>
-  </div>
+ </div>
 <?php include_once 'footer.php'; ?>
 </div>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -198,6 +171,5 @@ $PDO = db_connect();
 <script src="dist/js/demo.js"></script>
 <script src="dist/js/bootstrap-notify.js"></script>
 <script src="dist/js/demo2.js"></script>
-
 </body>
 </html>

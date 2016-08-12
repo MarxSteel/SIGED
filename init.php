@@ -18,7 +18,7 @@ require_once 'functions.php';
 
 
     function qrcode($url, $size){
-        if($url && $size = "200"){
+        if($url && $size = "105"){
         return "http://chart.apis.google.com/chart?cht=qr&chl=".$url."&chs=".$size."x".$size."";
         }
         }
