@@ -1,26 +1,20 @@
 <?php
-/* AreaRestrita.php */
 require("restritos.php"); 
 require_once 'init.php';
 $PDO = db_connect();
-
- $query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");
-      $query->execute();
-
-          $par = $query->fetch();
-            $Distrito = $par['Distrito'];
-            $LoginNome = $par['Nome'];
-            $LoginCargoDistrito = $par['CargoDistrito'];
-            $LoginClube = $par['Clube'];
-            $LoginCargoClube = $par['CargoClube'];
-            $IDUSer = $par['codLogin'];
-            $Foto = $par['Foto'];
-
-
+include_once 'ChamaPrivilegios.php';
+$query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");
+$query->execute();
+ $par = $query->fetch();
+    $Distrito = $par['Distrito'];
+    $LoginNome = $par['Nome'];
+    $LoginCargoDistrito = $par['CargoDistrito'];
+    $LoginClube = $par['Clube'];
+    $LoginCargoClube = $par['CargoClube'];
+    $IDUSer = $par['codLogin'];
+    $Foto = $par['Foto'];
 //Chamando Privilégios de Página
   $CorrigeProjetos = $par['icProjeto'];
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -94,6 +88,9 @@ $PDO = db_connect();
     </section>
   <section class="content">
     <div class="row">
+    <?php
+      if($VarClub === '22'){
+    ?>
      <div class="col-md-4 col-sm-6 col-xs-12">
       <div class="info-box">
        <a href="Distrito/Clubes.php" >
@@ -105,6 +102,13 @@ $PDO = db_connect();
       </div>
      </div>
     </div>
+    <?php 
+     }
+     else{
+     }
+     if($VarAssociado === '22')
+     {
+    ?>
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="Distrito/Associados.php" >
@@ -115,6 +119,13 @@ $PDO = db_connect();
       <div class="info-box-content"><h4>Lista de Associados</h4></div>
      </div>
     </div>
+    <?php
+     }
+     else{
+     }
+     if($VarSecretaria === '22')
+     {
+    ?>
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="Distrito/Secretaria.php" >
@@ -125,6 +136,14 @@ $PDO = db_connect();
       <div class="info-box-content"><h4>Secretaria</h4></div>
      </div>
     </div>
+    <?php
+     }
+     else
+     {    
+     }
+     if($VarTesouraria === '22')
+     {
+    ?>    
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="Distrito/Tesouraria.php" >
@@ -135,6 +154,12 @@ $PDO = db_connect();
       <div class="info-box-content"><h4>Tesouraria</h4></div>
      </div>
     </div>
+    <?php
+     }
+     else
+     {    
+     }
+     ?>
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="ImagemPublica.php" >
@@ -155,36 +180,9 @@ $PDO = db_connect();
       <div class="info-box-content">Projetos<h4>Arquivo Nacional</h4></div>
      </div>
     </div>
-    <?php
-    if ($CorrigeProjetos == "N") {
-      //SE E SOMENTE SE CORRIGEPROJETOS FOR N ENTÃO NÃO FAÇA NADA
-    }
-    elseif ($CorrigeProjetos == "22") {
-    echo '
-    <div class="col-md-4 col-sm-6 col-xs-12">
-     <div class="info-box">
-      <a href="icbrasil/Projetos.php">
-       <span class="info-box-icon btn bg-purple">
-        <i class="fa fa-archive"></i>
-       </span>
-      </a>
-      <div class="info-box-content">INTERACT BRASIL<h4>CORRIGIR PROJETOS</h4></div>
-     </div>
-    </div>';
-    }
-
-
-    ?>
-
    </div>
-
-
-
-
-
-
   </section>
-  </div>
+ </div>
 <?php include_once 'footer.php'; ?>
 </div>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -198,6 +196,5 @@ $PDO = db_connect();
 <script src="dist/js/demo.js"></script>
 <script src="dist/js/bootstrap-notify.js"></script>
 <script src="dist/js/demo2.js"></script>
-
 </body>
 </html>
