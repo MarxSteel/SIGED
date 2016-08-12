@@ -25,7 +25,7 @@
   <ul class="treeview-menu">
    <li><a href="Distrito/Clubes.php"><i class="fa fa-industry"></i> Clubes</a></li>
    <li><a href="Distrito/Associados.php"><i class="fa fa-users"></i> Associados</a></li>
-   <li><a href="Distrito/Secretaria.php"><i class="fa fa-book"></i> Secretaria</a></li>
+   <!--<li><a href="Distrito/Secretaria.php"><i class="fa fa-book"></i> Secretaria</a></li>-->
    <li><a href="Distrito/Tesouraria.php"><i class="fa fa-dollar"></i> Tesouraria</a></li>
   </ul>
  </li>
