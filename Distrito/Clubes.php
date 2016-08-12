@@ -334,8 +334,8 @@ $DataCadastro = date("d/m/Y - h:i:s");
     <script language="JavaScript">
 function abrir(URL) {
  
-  var width = 150;
-  var height = 250;
+  var width = 800;
+  var height = 650;
  
   var left = 99;
   var top = 99;
