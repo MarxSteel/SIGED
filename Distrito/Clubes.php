@@ -254,15 +254,11 @@ $DataCadastro = date("d/m/Y - h:i:s");
                $executa = $PDO->query("INSERT INTO icbr_clube (icbr_Clube, icbr_DataFundado, icbr_Distrito, icbr_RotaryPadrinho, icbr_Status) VALUES ('$Interact', '$DataFundacao', '$Distrito', '$Rotary', 'A')");
                if($executa)
                {
-                echo '
-                 <script type="text/JavaScript">
-                  alert("Clube Cadastrado!");
-                  location.href="Clubes.php"
-                 </script>';
+                echo '<script type="text/JavaScript">alert("Clube Cadastrado!");location.href="Clubes.php"</script>';
                }
                else
                {
-                echo '<script type="text/javascript">alert("! <?php print_r($PDO->errorInfo()); ?>");</script>';
+                echo '<script type="text/javascript">alert("' . $PDO->errorInfo() . '");</script>';
                }
               }
              ?>
