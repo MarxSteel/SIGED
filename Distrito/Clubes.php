@@ -90,7 +90,11 @@ $DataCadastro = date("d/m/Y - h:i:s");
    </div>   
   </nav>
  </header>
- <aside class="main-sidebar"><section class="sidebar"><?php include_once 'InfoBar.php'; ?></section></aside>
+ <aside class="main-sidebar">
+  <section class="sidebar">
+   <?php include_once 'InfoBar.php'; ?>
+  </section>
+ </aside>
  <div class="content-wrapper">
  <section class="content-header">
   <h1>
