@@ -134,7 +134,11 @@ $stmt3->execute();
      </div>   
     </nav>
    </header>
-   <aside class="main-sidebar"><section class="sidebar"><?php include_once 'InfoBar.php'; ?></section></aside>
+   <aside class="main-sidebar">
+    <section class="sidebar">
+     <?php include_once 'InfoBar.php'; ?>
+    </section>
+   </aside>
    <div class="content-wrapper">
    <section class="content-header">
     <h1>
@@ -266,13 +270,22 @@ $stmt3->execute();
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <code><span aria-hidden="true">&times;</span></code>
             </button>
-            <h4 class="modal-title" id="myModalLabel">Adicionando Club</h4>
+            <h4 class="modal-title" id="myModalLabel">Adicionando Novo Sócio</h4>
            </div>
+              <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa fa-ban"></i> Atenção!</h4>
+                Obrigatoriamente, é necessário digitar o CPF com Pontos e traços, ou seja: 012.345.678-90.
+              </div>
            <div class="modal-body">
             <div class="col-xs-12">
              <form onsubmit="return valida_form();" name="NovoSocio" id="name" method="post" action="" enctype="multipart/form-data">
-              <div class="col-xs-12">Nome Completo
+              <div class="col-xs-8">Nome Completo
                <input type="text" id="nome" name="nome" class="form-control" required="required">
+              </div>
+              <div class="col-xs-4">CPF
+               <input type="text" id="cpf" name="cpf"  minlength="14" maxlength="14" class="form-control" required="required" placeholder="999.999.999-99">
+
               </div>
               <div class="col-xs-6">Interact Club de:
                <select class="form-control" name="clube" id="clube" required="required">
@@ -293,123 +306,141 @@ $stmt3->execute();
                 <option value="Diretor de Finanças">Diretor de Finanças</option>
                 <option value="Diretor de Internos">Diretor de Internos</option>
                 <option value="Diretor de Comunidades">Diretor de Comunidades</option>
-        <option value="Diretor de Imagem Publica">Diretor de Imagem Pública</option>
-        <option value="Diretor">Diretor</option>
-        <option value="Associado">Associado</option>
-       </select>
-      </div>
-      <div class="col-xs-4">Data de Posse
-       <input type="text" id="posse" name="posse" class="form-control" required="required" minlength="10" maxlength="10" placeholder="Formato DD/MM/AAAA">
-      </div>
-      <div class="col-xs-4">Data de Nascimento
-       <input type="text" id="nasc" name="nasc" class="form-control" required="required" minlength="10" maxlength="10" placeholder="Formato DD/MM/AAAA">
-      </div>
-      <div class="col-xs-4">Gênero
-       <select class="form-control" name="genero" id="genero" required="required">
-        <option value="" selected="selected">SELECIONE</option>
-        <option value="M">Masculino</option>
-        <option value="F">Feminino</option>
-       </select>
-      </div>
-      <br /><h4>Dados de Endereço</h4>
-      <div class="col-xs-9">Rua
-       <input type="text" id="rua" name="rua" class="form-control" required="required" >
-      </div>
-      <div class="col-xs-3">Nº
-       <input type="text" id="numero" name="numero" class="form-control" required="required"  >
-      </div>
-      <div class="col-xs-6">Bairro/Setor
-       <input type="text" id="bairro" name="bairro" class="form-control" required="required"  >
-      </div>
-      <div class="col-xs-6">Cidade
-       <input type="text" id="cidade" name="cidade" class="form-control" required="required"  >
-      </div>
-      <div class="col-xs-4">CEP
-       <input type="text" id="cep" name="cep" minlength="10" maxlength="10"  class="form-control" required="required"  >
-      </div>
-      <div class="col-xs-4">Estado
-       <select class="form-control" name="uf" id="uf" required="required">
-        <option value="" selected="selected">SELECIONE</option>
-        <option value="Acre">Acre</option>
-        <option value="Alagoas">Alagoas</option>
-        <option value="Amapá">Amapá</option>
-        <option value="Amazonas">Amazonas</option>
-        <option value="Bahia">Bahia</option>
-        <option value="Ceará">Ceará</option>
-        <option value="Distrito Federal">Distrito Federal</option>
-        <option value="Espirito Santo">Espírito Santo</option>
-        <option value="Goiás">Goiás</option>
-        <option value="Maranhão">Maranhão</option>
-        <option value="Mato Grosso">Mato Grosso</option>
-        <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
-        <option value="Minas Gerais">Minas Gerais</option>
-        <option value="Pará">Pará</option>
-        <option value="Paraíba">Paraíba</option>
-        <option value="Paraná">Paraná</option>
-        <option value="Pernambuco">Pernambuco</option>
-        <option value="Piauí">Piauí</option>
-        <option value="Rio de Janeiro">Rio de Janeiro</option>
-        <option value="Rio Grande do Norte">Rio Grande do Norte</option>
-        <option value="Rio Grande do Sul">Rio Grande do Sul</option>
-        <option value="Rondônia">Rondônia</option>
-        <option value="Roraima">Roraima</option>
-        <option value="Santa Catarina">Santa Catarina</option>
-        <option value="São Paulo">São Paulo</option>
-        <option value="Sergipe">Sergipe</option>
-        <option value="Tocantins">Tocantins</option>
-       </select>
-      </div>
-      <div class="col-xs-4"><br /></div><br />
-             <div>
-               <br /><br />
-               <input name="enviar" type="submit" class="btn btn-primary" id="enviar" value="Cadastrar" />
-               <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                <option value="Diretor de Imagem Publica">Diretor de IP</option>
+                <option value="Diretor">Diretor</option>
+                <option value="Associado">Associado</option>
+                <option value="Ex Associado">Ex Associado</option>
+                <option value="Honorário">Honorário</option>
+               </select>
               </div>
-     </form>
-        <?php
-        if(@$_POST["enviar"])
-         {
-          $Nome = $_POST['nome'];
-          $Clube = $_POST['clube'];
-          $Cargo = $_POST['cargo'];
-          $Posse = $_POST['posse'];
-          $DtNasc = $_POST['nasc'];
-          $Rua = $_POST['rua'];
-          $Num = $_POST['numero'];
-          $Bairro = $_POST['bairro'];
-          $Cidade = $_POST['cidade'];
-          $UF = $_POST['uf'];
-          $CEP = $_POST['cep'];
-          $G = $_POST['genero'];
+              <div class="col-xs-4">Data de Posse
+               <div class="input-group">
+                <div class="input-group-addon">
+                 <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" name="posse" class="form-control" minlength="10" maxlength="10" OnKeyPress="formatar('##/##/####', this)" required="required">
+               </div>
+              </div>
+              <div class="col-xs-4">Data de Nascimento
+               <div class="input-group">
+                <div class="input-group-addon">
+                 <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" name="nasc" class="form-control" minlength="10" maxlength="10" OnKeyPress="formatar('##/##/####', this)" required="required">
+               </div>
+              </div>
+              <div class="col-xs-4">Gênero
+               <select class="form-control" name="genero" required="required">
+                <option value="" selected="selected">SELECIONE</option>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+               </select>
+              </div>
+              <br /><h4>Dados de Endereço</h4>
+              <div class="col-xs-9">Rua
+                <input type="text" id="rua" name="rua" class="form-control" required="required" >
+              </div>
+              <div class="col-xs-3">Nº
+               <input type="text" id="numero" name="numero" class="form-control" required="required"  >
+              </div>
+              <div class="col-xs-6">Bairro/Setor
+               <input type="text" id="bairro" name="bairro" class="form-control" required="required"  >
+              </div>
+              <div class="col-xs-6">Cidade
+               <input type="text" id="cidade" name="cidade" class="form-control" required="required"  >
+              </div>
+              <div class="col-xs-4">CEP
+               <input type="text" id="cep" name="cep" minlength="10" maxlength="10"  class="form-control" required="required"  >
+              </div>
+              <div class="col-xs-4">Estado
+               <select class="form-control" name="uf" id="uf" required="required">
+                <option value="" selected="selected">SELECIONE</option>
+                <option value="Acre">Acre</option>
+                <option value="Alagoas">Alagoas</option>
+                <option value="Amapá">Amapá</option>
+                <option value="Amazonas">Amazonas</option>
+                <option value="Bahia">Bahia</option>
+                <option value="Ceará">Ceará</option>
+                <option value="Distrito Federal">Distrito Federal</option>
+                <option value="Espirito Santo">Espírito Santo</option>
+                <option value="Goiás">Goiás</option>
+                <option value="Maranhão">Maranhão</option>
+                <option value="Mato Grosso">Mato Grosso</option>
+                <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
+                <option value="Minas Gerais">Minas Gerais</option>
+                <option value="Pará">Pará</option>
+                <option value="Paraíba">Paraíba</option>
+                <option value="Paraná">Paraná</option>
+                <option value="Pernambuco">Pernambuco</option>
+                <option value="Piauí">Piauí</option>
+                <option value="Rio de Janeiro">Rio de Janeiro</option>
+                <option value="Rio Grande do Norte">Rio Grande do Norte</option>
+                <option value="Rio Grande do Sul">Rio Grande do Sul</option>
+                <option value="Rondônia">Rondônia</option>
+                <option value="Roraima">Roraima</option>
+                <option value="Santa Catarina">Santa Catarina</option>
+                <option value="São Paulo">São Paulo</option>
+                <option value="Sergipe">Sergipe</option>
+                <option value="Tocantins">Tocantins</option>
+               </select>
+              </div>
+              <div class="col-xs-4"><br /></div><br />
+               <div><br /><br />
+                <input name="btvalidar" type="submit" class="btn btn-primary" id="btvalidar" value="Cadastrar" />
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+               </div>
+             </form>
+             <?
+             if(isset($_POST['btvalidar']))
+              {
+                $cpf_enviado = validaCPF($_POST['cpf']);
+                if($cpf_enviado == true){
+            // só continua com as queries se o CPF for validado
+              $Nome = $_POST['nome'];
+              $Clube = $_POST['clube'];
+              $Cargo = $_POST['cargo'];
+              $Posse = $_POST['posse'];
+              $DtNasc = $_POST['nasc'];
+              $Rua = $_POST['rua'];
+              $Num = $_POST['numero'];
+              $Bairro = $_POST['bairro'];
+              $Cidade = $_POST['cidade'];
+              $UF = $_POST['uf'];
+              $CEP = $_POST['cep'];
+              $G = $_POST['genero'];
+              $CPF = $_POST['cpf'];
 
-$uploaddir = 'pasta/';
+               //AQUI CHAMANDO INFORMAÇÕES DO CLUBE
+               $chamaclube = $PDO->prepare("SELECT * FROM icbr_clube WHERE icbr_id='$Clube'");
+                $chamaclube->execute();
+                $iid = $chamaclube->fetch();
+                $NomeClube = $iid['icbr_Clube'];
 
-$uploadfile = $uploaddir . $_FILES['arquivo']['name'];
-
-if (move_uploaded_file($_FILES['arquivo']['tmp_name'], $uploadfile)){
-echo "Arquivo Enviado";}
-else {echo "Arquivo não enviado";}
-
-         $chamaclube = $PDO->prepare("SELECT * FROM icbr_clube WHERE icbr_id='$Clube'");
-      $chamaclube->execute();
-
-          $iid = $chamaclube->fetch();
-            $NomeClube = $iid['icbr_Clube'];
-
-   $executa = $PDO->query("INSERT INTO icbr_associado (icbr_AssNome, icbr_DtPosse, icbr_AssCargo, icbr_AssClube, icbr_AssClubeID, icbr_AssDistrito, icbr_AssDtNascimento, icbr_AssEndereco, icbr_AssNum, icbr_AssBairro, icbr_AssCidade, icbr_AssUF, icbr_AssCEP, icbr_AssGenero, icbr_AssFoto) VALUES ('$Nome', '$Posse', '$Cargo', '$NomeClube', '$Clube', '$Distrito', '$DtNasc', '$Rua', '$Num', '$Bairro', '$Cidade', '$UF', '$CEP', '$G', 'SemFoto.jpg')");
-   if($executa){
+                $executa = $PDO->query("INSERT INTO icbr_associado (icbr_AssNome, icbr_DtPosse, icbr_AssCargo, icbr_AssClube, icbr_AssClubeID, icbr_AssDistrito, icbr_AssDtNascimento, icbr_AssEndereco, icbr_AssNum, icbr_AssBairro, icbr_AssCidade, icbr_AssUF, icbr_AssCEP, icbr_AssGenero, icbr_AssFoto, icbr_CPF) VALUES ('$Nome', '$Posse', '$Cargo', '$NomeClube', '$Clube', '$Distrito', '$DtNasc', '$Rua', '$Num', '$Bairro', '$Cidade', '$UF', '$CEP', '$G', 'SemFoto.jpg', '$CPF')");
+                 if($executa){
                   echo '
                  <script type="text/JavaScript">
                   alert("Associado cadastrado com sucesso!");
                   location.href="Associados.php"
                  </script>';
-   }
-   else{
-      echo '<script type="text/javascript">alert("Erro! <?php print_r($PDO->errorInfo()); ?>");</script>';
+                }
+                else{
+                echo '<script type="text/javascript">alert("Erro!' . $PDO->errorInfo() . '");</script>';
+                }
+  
 
-   }
-         }
-        ?>
+
+            
+
+
+
+
+             }
+                         elseif($cpf_enviado == false){
+            echo '<script type="text/javascript">alert("CPF INVÁLIDO");</script>';
+            }
+            }
+            ?>
 
           
             </div>
@@ -576,6 +607,22 @@ else {echo "Arquivo não enviado";}
    
   }
   </script>
+
+
+<script>
+function formatar(mascara, documento){
+  var i = documento.value.length;
+  var saida = mascara.substring(0,1);
+  var texto = mascara.substring(i)
+  
+  if (texto.substring(0,1) != saida){
+            documento.value += texto.substring(0,1);
+  }
+  
+}
+</script>
+
+
       <script language="JavaScript">
 function abrir(URL) {
  
@@ -589,8 +636,35 @@ function abrir(URL) {
  
 }
 </script>
-    
-      
+  <?php
+function validaCPF($cpf)
+{ // Verifiva se o número digitado contém todos os digitos
+    $cpf = str_pad(ereg_replace('[^0-9]', '', $cpf), 11, '0', STR_PAD_LEFT);
+  
+  // Verifica se nenhuma das sequências abaixo foi digitada, caso seja, retorna falso
+    if (strlen($cpf) != 11 || $cpf == '00000000000' || $cpf == '11111111111' || $cpf == '22222222222' || $cpf == '33333333333' || $cpf == '44444444444' || $cpf == '55555555555' || $cpf == '66666666666' || $cpf == '77777777777' || $cpf == '88888888888' || $cpf == '99999999999')
+  {
+  return false;
+    }
+  else
+  {   // Calcula os números para verificar se o CPF é verdadeiro
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $cpf{$c} * (($t + 1) - $c);
+            }
+ 
+            $d = ((10 * $d) % 11) % 10;
+ 
+            if ($cpf{$c} != $d) {
+                return false;
+            }
+        }
+ 
+        return true;
+    }
+}
+  ?>
+
       
       
       
