@@ -224,6 +224,9 @@ $stmt3->execute();
             <a class="btn btn-danger btn-sm" href="javascript:abrir('DesativaAssociado.php?ID=<?php echo $LinkUser; ?>');">
              <i class="fa fa-remove"></i> Desligar Associado
             </a>
+            <a class="btn btn-default btn-sm" href="javascript:abrir('PrintUser.php?ID=<?php echo $LinkUser; ?>');">
+             <i class="fa fa-print"></i>
+            </a>
            </td>
           </tr>
           <?php endwhile; ?>
