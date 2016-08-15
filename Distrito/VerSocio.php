@@ -144,7 +144,7 @@ $IDClube = $_GET['ID'];
          <tbody>
           <?php while ($user = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
           <tr>
-           <td><?php echo $user['hist_uid']; ?></td>
+           <td><?php echo $user['hist_id']; ?></td>
            <td><?php echo $user['hist_Gestao']; ?></td>
            <td>
             <?php 
