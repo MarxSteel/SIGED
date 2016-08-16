@@ -70,6 +70,7 @@ $teste='teste';
      <div class="box box-default">
      <div class="box-header with-border">
       <h2 class="box-title">#<?php echo $CodClub; ?> - <strong> Interact Club de <?php echo $ClubeNome; ?></strong></h2>
+      
      </div>
      <div class="box-body">
       <div class="col-xs-9">

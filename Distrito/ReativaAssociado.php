@@ -83,7 +83,7 @@ $IDClube = $_GET['ID'];
      <div class="alert alert-danger alert-dismissible">
      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
      <h4><i class="icon fa fa-ban"></i> ATENÇÃO!</h4>
-      VOCÊ ESTÁ PRESTES A DESATIVAR ESTE ASSOCIADO. TEM CERTEZA?
+      VOCÊ ESTÁ PRESTES A <strong>REATIVAR</strong> ESTE ASSOCIADO. TEM CERTEZA?
      </div>
      <div class="box-body">
       <div class="col-xs-8">
@@ -130,17 +130,17 @@ $IDClube = $_GET['ID'];
         <table width="400" border="0" align="center">
          <tr>
           <div class="col-xs-12"><br />
-            <input name="enviar" type="submit" class="btn btn-danger btn-lg btn-block" id="enviar" value="DESATIVAR ASSOCIADO"  />
+            <input name="enviar" type="submit" class="btn btn-success btn-lg btn-block" id="enviar" value="REATIVAR ASSOCIADO"  />
           </div>
          </tr>
         </table>
        </form>
        <?php 
         if(@$_POST["enviar"]){
-          $executa = $PDO->query("UPDATE icbr_associado SET icbr_AssStatus='I' WHERE icbr_uid='$IDClube' ");
+          $executa = $PDO->query("UPDATE icbr_associado SET icbr_AssStatus='A' WHERE icbr_uid='$IDClube' ");
              if($executa)
                {
-          echo '<script type="text/javascript">alert("Associado Desativado Com Sucesso!");</script>';
+          echo '<script type="text/javascript">alert("Associado Reativado Com Sucesso!");</script>';
           echo '<script type="text/javascript">window.close();</script>'; 
           }
           else{

@@ -2,12 +2,12 @@
  <ul class="nav navbar-nav">
   <li class="dropdown user user-menu">
    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-    <img src="uploads/<?php echo $Foto; ?>" class="user-image" alt="User Image">
+    <img src="Distrito/uploads/<?php echo $Foto; ?>" class="user-image" alt="User Image">
      <span class="hidden-xs"><?php echo $LoginNome; ?></span>
    </a>
    <ul class="dropdown-menu">
     <li class="user-header">
-     <img src="uploads/<?php echo $Foto; ?>" class="img-circle" alt="User Image">
+     <img src="Distrito/uploads/<?php echo $Foto; ?>" class="img-circle" alt="User Image">
      <p>
       <?php echo $LoginNome . " - " . $LoginCargoDistrito; ?>
       <small>Interact Club de <?php echo $LoginClube . "<br /> Distrito " . $Distrito; ?></small>

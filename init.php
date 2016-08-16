@@ -22,4 +22,10 @@ require_once 'functions.php';
         return "http://chart.apis.google.com/chart?cht=qr&chl=".$url."&chs=".$size."x".$size."";
         }
         }
+
+    function qrcode2($url, $size){
+        if($url && $size = "150"){
+        return "http://chart.apis.google.com/chart?cht=qr&chl=".$url."&chs=".$size."x".$size."";
+        }
+        }
 ?> 

@@ -3,7 +3,8 @@ require("../restritos.php");
 require_once '../init.php';
 $PDO = db_connect();
 include_once '../ChamaPrivilegios.php';
-
+include '../config.php';
+include_once("../config/conexao.php");
  $query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");
  $query->execute();
   $par = $query->fetch();
@@ -48,11 +49,13 @@ $IDClube = $_GET['ID'];
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>SIGED - Sistema Integrado de Gestão Distrital | MDIO Interact Brasil</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="../dist/css/AdminLTE.css">
+    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../plugins/iCheck/flat/blue.css">
+    <link rel="stylesheet" href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css">
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
  <div class="wrapper">
@@ -78,7 +81,14 @@ $IDClube = $_GET['ID'];
     <section class="content">
      <div class="box box-default">
      <div class="box-header with-border">
-      <h2 class="box-title">#<?php echo $IDClube; ?> - <strong> <?php echo $NomeCompleto; ?></strong></h2>
+      <h2 class="box-title">
+      #<?php echo $IDClube; ?> - <strong> <?php echo $NomeCompleto; ?></strong></h2>
+      <small class="pull-right">
+       <a data-toggle="modal" data-target="#NovoCargo" class="btn btn-default">
+       <i class="fa fa-briefcase"> Add Cargo</i></a>
+       <a data-toggle="modal" data-target="#NovaFoto" class="btn bg-orange">
+       <i class="fa fa-camera"> Trocar Foto</i></a>
+      </small>
      </div>
      <div class="box-body">
       <div class="col-xs-8">
@@ -116,7 +126,7 @@ $IDClube = $_GET['ID'];
       </div>
       <div class="col-xs-4">
        <li class="list-group-item">
-        <img src="../uploads/<?php echo $FotoSocio; ?>" width="140" alt="Foto">
+        <img src="uploads/<?php echo $FotoSocio; ?>" width="140" alt="Foto">
        </li>
       </div>
 
@@ -130,7 +140,7 @@ $IDClube = $_GET['ID'];
            $stmt = $PDO->prepare($QueryClubes);
            $stmt->execute();
         ?>
-        <table id="associados" class="table table-responsive table-bordered table-striped">
+        <table id="cargos" class="table table-bordered table-striped table-responsive">
          <thead>
           <tr>
             <th>#</th>
@@ -176,6 +186,13 @@ $IDClube = $_GET['ID'];
       </div>
       </div>
      </div>
+     
+     <?php
+
+     include_once 'ModalSocio.php';
+     ?>
+
+
 
 
     </section>
@@ -188,5 +205,31 @@ include_once '../footer.php'; ?>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="../dist/js/app.min.js"></script>
+<script src="../plugins/sparkline/jquery.sparkline.min.js"></script>
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="../plugins/fastclick/fastclick.min.js"></script>
+<script type="text/javascript" src="formatar_moeda.js"></script>
+
+<script>
+      $(function () {
+        $('#cargos').DataTable({
+          "paging": true,
+          "lengthChange": true,
+          "searching": true,
+          "ordering": true,
+          "info": true,
+          "autoWidth": true
+        });
+        $('#AAtivo').DataTable({
+          "paging": true,
+          "lengthChange": true,
+          "searching": true,
+          "ordering": true,
+          "info": true,
+          "autoWidth": true
+        });
+      });
+    </script>
 </body>
 </html>

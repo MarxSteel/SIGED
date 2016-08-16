@@ -135,6 +135,7 @@ $query->execute();
      {    
      }
      ?>
+     <!--
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="ImagemPublica.php" >
@@ -145,6 +146,8 @@ $query->execute();
       <div class="info-box-content"><h4>Material de Apoio</h4></div>
      </div>
     </div>
+     -->
+     <!--
     <div class="col-md-4 col-sm-6 col-xs-12">
      <div class="info-box">
       <a href="Distrito/Projetos.php">
@@ -155,6 +158,7 @@ $query->execute();
       <div class="info-box-content">Projetos<h4>Arquivo Nacional</h4></div>
      </div>
     </div>
+    -->
    </div>
   </section>
  </div>

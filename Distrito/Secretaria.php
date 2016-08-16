@@ -2,6 +2,8 @@
 /* AreaRestrita.php */
 require("../restritos.php"); 
 require_once '../init.php';
+include_once '../ChamaPrivilegios.php';
+
 $PDO = db_connect();
 
  $query = $PDO->prepare("SELECT * FROM login WHERE login='$login'");

@@ -4,6 +4,7 @@ require("restritos.php");
 require_once 'init.php';
 include 'config.php';
 include_once("config/conexao.php");
+include_once 'ChamaPrivilegios.php';
 
 $PDO = db_connect();
 
@@ -66,30 +67,7 @@ document.getElementById('foto').value="";
   <aside class="main-sidebar">
    <section class="sidebar">
     <?php include_once 'InfoBar.php'; ?>
-     <ul class="sidebar-menu">
-      <li class="header"></li>
-      <li><a href="dashboard.php"><i class="fa fa-home"></i>Início</a></li>
-      <li class="active"><a href="#"><i class="fa fa-user"></i>Meu Perfil</a></li>
-
-      <li class="treeview">
-        <a href="#">
-         <i class="fa fa-building"></i> <span>Distrito <?php echo $Distrito; ?></span>
-         <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="Distrito/Clubes.php"><i class="fa fa-industry"></i> Clubes</a></li>
-            <li><a href="Distrito/Associados.php"><i class="fa fa-users"></i> Associados</a></li>
-            <li><a href="Distrito/Secretaria.php"><i class="fa fa-book"></i> Secretaria</a></li>
-            <li><a href="Distrito/Tesouraria.php"><i class="fa fa-dollar"></i> Tesouraria</a></li>
-          </ul>
-        </li>
-        <li><a href="Distrito/Projetos.php"><i class="fa fa-archive"></i>Arquivo de Projetos</a></li>
-        <li><a href="ImagemPublica.php"><i class="fa fa-download"></i> Material de Apoio</a></li>
-      </ul>
     </section>
-    <!-- /.sidebar -->
   </aside>
   <div class="content-wrapper">
    <section class="content-header">
@@ -104,7 +82,7 @@ document.getElementById('foto').value="";
      <div class="col-md-4">
       <div class="box box-primary">
        <div class="box-body box-profile">
-        <img class="profile-user-img img-responsive" src="uploads/<?php echo $Foto; ?>" width="200" alt="Perfil">
+        <img class="profile-user-img img-responsive" src="Distrito/uploads/<?php echo $Foto; ?>" width="200" alt="Perfil">
         <h3 class="profile-username text-center"><?php echo $LoginNome; ?></h3>
         <p class="text-muted text-center"><?php echo $LoginCargoDistrito; ?></p>
         <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#trocaFoto">
