@@ -189,11 +189,11 @@ $stmt3->execute();
        <ul class="nav nav-tabs pull-right">
         <li class="active"><a href="#Ativos" data-toggle="tab">Associados ativos</a></li>
         <li><a href="#Inativos" data-toggle="tab">Associados Desligados</a></li>
-        <li class="pull-left header">LISTA DE CLUBS</li>
+        <li class="pull-left header">LISTA DE ASSOCIADOS</li>
        </ul>
        <div class="tab-content">
         <div class="tab-pane active" id="Ativos">
-        <table id="AAtivo" class="table table-bordered table-striped table-responsive">
+        <table id="AssAtivo" class="table table-bordered table-striped table-responsive">
          <thead>
           <tr>
            <th>ID</th>
@@ -219,14 +219,18 @@ $stmt3->execute();
            <td><?php echo $user['icbr_AssCargo'] ?></td>
            <td>
             <a class="btn btn-info btn-sm" href="javascript:abrir('VerSocio.php?ID=<?php echo $LinkUser; ?>');">
-             <i class="fa fa-search"></i> Ver Perfil
-            </a>
+             <i class="fa fa-search"></i>Ver Perfil
+            </a>                          
             <a class="btn btn-danger btn-sm" href="javascript:abrir('DesativaAssociado.php?ID=<?php echo $LinkUser; ?>');">
-             <i class="fa fa-remove"></i> Desligar Associado
+             <i class="fa fa-remove"></i>
             </a>
             <a class="btn btn-default btn-sm" href="javascript:abrir('PrintUser.php?ID=<?php echo $LinkUser; ?>');">
-             <i class="fa fa-print"></i>
+             <i class="fa fa-print"> Crachá</i>
             </a>
+            <a class="btn bg-orange btn-sm" href="javascript:abrir('PrintUser.php?ID=<?php echo $LinkUser; ?>');">
+             <i class="fa fa-print"> Credencial (Padrão RI)</i>
+            </a>
+
            </td>
           </tr>
           <?php endwhile; ?>
@@ -234,7 +238,7 @@ $stmt3->execute();
         </table>
         </div>
         <div class="tab-pane" id="Inativos">
-        <table id="AInativo" class="table table-bordered table-striped table-responsive">
+        <table id="AssInativo" class="table table-bordered table-striped table-responsive">
          <thead>
           <tr>
            <th>ID</th>
@@ -248,16 +252,21 @@ $stmt3->execute();
          <tbody>
           <?php while ($user2 = $stmt2->fetch(PDO::FETCH_ASSOC)): ?>
           <tr>
-           <td><?php echo $user2['icbr_uid'] ?></td>
+           <td>
+           <?php
+             echo $user2['icbr_uid'];
+             $LinkUser2 = $user2['icbr_uid'];
+            ?>
+           </td>
            <td><?php echo $user2['icbr_AssClube'] ?></td>
            <td><?php echo $user2['icbr_AssNome'] ?></td>
            <td><?php echo $user2['icbr_AssDtNascimento'] ?></td>
            <td><?php echo $user2['icbr_AssCargo'] ?></td>
            <td>
-            <a class="btn btn-info btn-sm" href="javascript:abrir('VerSocio.php?ID=<?php echo $LinkUser; ?>');">
+            <a class="btn btn-info btn-sm" href="javascript:abrir('VerSocio.php?ID=<?php echo $LinkUser2; ?>');">
              <i class="fa fa-search"></i> Ver Perfil
             </a>
-            <a class="btn btn-success btn-sm" href="javascript:abrir('DesativaAssociado.php?ID=<?php echo $LinkUser; ?>');">
+            <a class="btn btn-success btn-sm" href="javascript:abrir('ReativaAssociado.php?ID=<?php echo $LinkUser2; ?>');">
              <i class="fa fa-thumbs-up"></i> Reativar Associado
             </a>
            </td>
@@ -532,9 +541,33 @@ $stmt3->execute();
           </div>
          </div>
         </div>
+       </div>
+<!-- AQUI COMEÇA A DIV DE LINKS PARA BAIXAR -->
+        <div class="modal fade" id="Impressoes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+          <div class="modal-content">
+           <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <code><span aria-hidden="true">&times;</span></code>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Selecione o tipo de Impressão</h4>
+           </div>
+           <div class="modal-body">
+            <div class="col-xs-6">
+            <a class="btn btn-default btn-lg" href="javascript:abrir('PrintUser.php?ID=<?php echo $LinkUser; ?>');">
+             <i class="fa fa-print"> Crachá de associado</i>
+            </a>
+
+             </div>
+           </div>
+           <div class="modal-footer"></div>
+          </div>
+         </div>
+        </div>
               <!-- /.tab-pane -->
               <!-- /.tab-pane -->
             </div>
+
             <!-- /.tab-content -->
           </div>
 
@@ -564,38 +597,35 @@ $stmt3->execute();
     </div>
   <?php include_once '../footer.php'; ?>
   </div>
-  <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-  <script src="../bootstrap/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-  <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
-  <script src="../dist/js/app.min.js"></script>
-  <script src="../dist/js/pages/dashboard.js"></script>
-  <script src="../dist/js/demo.js"></script>
-  <script src="../plugins/sparkline/jquery.sparkline.min.js"></script>
-  <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
-  <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
-  <script src="../plugins/fastclick/fastclick.min.js"></script>
-  <script>
-        $(function () {
-          $('#clubsativos').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": true
-          });
-          $('#clubsinativos').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": true
-          });
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="../dist/js/app.min.js"></script>
+<script src="../plugins/sparkline/jquery.sparkline.min.js"></script>
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="../plugins/fastclick/fastclick.min.js"></script>
+<script type="text/javascript" src="formatar_moeda.js"></script>
+
+<script>
+      $(function () {
+        $('#AssAtivo').DataTable({
+          "paging": true,
+          "lengthChange": true,
+          "searching": true,
+          "ordering": true,
+          "info": true,
+          "autoWidth": true
         });
-      </script>
+        $('#AssInativo').DataTable({
+          "paging": true,
+          "lengthChange": true,
+          "searching": true,
+          "ordering": true,
+          "info": true,
+          "autoWidth": true
+        });
+      });
 
       <script language="JavaScript">
   function abrir(URL) {
