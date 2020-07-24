@@ -14,6 +14,7 @@ $query->execute();
     $IDUSer = $par['codLogin'];
     $Foto = $par['Foto'];
 //Chamando Privilégios de Página
+// Caso a função não funcione, pega na mão de deus pois faz tanto tempo que já é irineu, se ele não sabe, nem eu
   $CorrigeProjetos = $par['icProjeto'];
 ?>
 <!DOCTYPE html>
